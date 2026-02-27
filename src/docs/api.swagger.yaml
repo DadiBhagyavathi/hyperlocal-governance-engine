@@ -1,0 +1,33 @@
+openapi: 3.0.0
+info:
+  title: Hyper-Local Targeting Engine API
+  version: 1.0.0
+  description: Backend APIs for geo-fenced civic notifications and analytics
+
+paths:
+  /api/v1/projects:
+    get:
+      summary: List all public development projects
+      responses:
+        '200':
+          description: Success
+
+    post:
+      summary: Create a new project
+      responses:
+        '201':
+          description: Project created
+
+  /api/v1/geofence/validate:
+    post:
+      summary: Validate user location against geo-fences
+      responses:
+        '200':
+          description: Geo-fence result
+
+  /api/v1/analytics:
+    get:
+      summary: Engagement analytics
+      responses:
+        '200':
+          description: Analytics data
