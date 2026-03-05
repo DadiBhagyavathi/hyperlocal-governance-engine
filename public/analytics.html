@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics - HyperGov</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .analytics-container {
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    
+    .stats-overview {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    
+    .stat-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      border-left: 4px solid #3498db;
+    }
+    
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #3498db;
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      color: #7f8c8d;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .chart-card {
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      height: 350px;
+    }
+    
+    .chart-card h3 {
+      margin-bottom: 1rem;
+      color: #2c3e50;
+      font-size: 1.2rem;
+    }
+    
+    .analysis-section {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+    }
+    
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    
+    .insight-card {
+      padding: 1.5rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border-left: 4px solid #e74c3c;
+    }
+    
+    .insight-card.positive {
+      border-left-color: #27ae60;
+    }
+    
+    .insight-card.warning {
+      border-left-color: #f39c12;
+    }
+    
+    .project-timeline {
+      margin-top: 2rem;
+    }
+    
+    .timeline-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border-left: 4px solid #3498db;
+    }
+    
+    .timeline-date {
+      font-weight: bold;
+      color: #3498db;
+      margin-right: 1rem;
+      min-width: 100px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/" class="logo">🏛️ HyperGov</a>
+      <button class="mobile-menu-toggle" onclick="toggleMenu()">☰</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/analytics.html">Analytics</a></li>
+        <li><a href="/faq.html">FAQs</a></li>
+        <li><a href="/feedback.html">Feedback</a></li>
+        <li><a href="/auth.html" class="btn btn-secondary">Sign In</a></li>
+        <li><a href="/auth.html" class="btn btn-primary">Sign Up</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="analytics-container">
+    <h2 class="section-title">📊 Civic Analytics Dashboard</h2>
+
+    <div class="stats-overview">
+      <div class="stat-card">
+        <div class="stat-number" id="totalProjects">24</div>
+        <div class="stat-label">Active Projects</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="totalBudget">$12.5M</div>
+        <div class="stat-label">Total Budget</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="completionRate">68%</div>
+        <div class="stat-label">Avg Completion</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="totalUsers">1,247</div>
+        <div class="stat-label">Active Citizens</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="notifications">3,892</div>
+        <div class="stat-label">Notifications Sent</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="satisfaction">87%</div>
+        <div class="stat-label">Satisfaction Rate</div>
+      </div>
+    </div>
+
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3>📈 Project Budget Distribution</h3>
+        <canvas id="budgetChart" width="300" height="180"></canvas>
+      </div>
+      
+      <div class="chart-card">
+        <h3>🏗️ Project Status Overview</h3>
+        <canvas id="statusChart" width="300" height="180"></canvas>
+      </div>
+      
+      <div class="chart-card">
+        <h3>📅 Monthly Engagement Trends</h3>
+        <canvas id="engagementChart" width="300" height="180"></canvas>
+      </div>
+      
+      <div class="chart-card">
+        <h3>🌍 Geographic Distribution</h3>
+        <canvas id="geoChart" width="300" height="180"></canvas>
+      </div>
+      
+      <div class="chart-card">
+        <h3>⏱️ Response Time Analysis</h3>
+        <canvas id="responseChart" width="300" height="180"></canvas>
+      </div>
+      
+      <div class="chart-card">
+        <h3>💬 Feedback Categories</h3>
+        <canvas id="feedbackChart" width="300" height="180"></canvas>
+      </div>
+    </div>
+
+    <div class="analysis-section">
+      <h3>🔍 Key Insights & Analysis</h3>
+      <div class="insights-grid">
+        <div class="insight-card positive">
+          <h4>✅ High Engagement</h4>
+          <p>Citizen engagement increased by 34% this quarter, with road infrastructure projects receiving the most attention.</p>
+        </div>
+        <div class="insight-card warning">
+          <h4>⚠️ Budget Overruns</h4>
+          <p>3 projects are currently 15% over budget. Recommend immediate review and cost optimization measures.</p>
+        </div>
+        <div class="insight-card positive">
+          <h4>📱 Mobile Usage</h4>
+          <p>78% of users access the platform via mobile devices, indicating strong mobile-first adoption.</p>
+        </div>
+        <div class="insight-card">
+          <h4>🕐 Peak Hours</h4>
+          <p>Most citizen activity occurs between 6-9 PM, suggesting optimal notification timing for maximum reach.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="analysis-section">
+      <h3>📋 Recent Project Timeline</h3>
+      <div class="project-timeline">
+        <div class="timeline-item">
+          <div class="timeline-date">Dec 15</div>
+          <div>
+            <strong>Main Street Renovation</strong> - Phase 2 completed ahead of schedule
+            <br><small style="color: #7f8c8d;">Budget: $2.1M | Progress: 75%</small>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Dec 12</div>
+          <div>
+            <strong>Community Park Development</strong> - Environmental clearance received
+            <br><small style="color: #7f8c8d;">Budget: $1.8M | Progress: 45%</small>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Dec 10</div>
+          <div>
+            <strong>Water Supply Enhancement</strong> - Installation phase initiated
+            <br><small style="color: #7f8c8d;">Budget: $3.2M | Progress: 60%</small>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Dec 8</div>
+          <div>
+            <strong>School Infrastructure</strong> - Contractor selection completed
+            <br><small style="color: #7f8c8d;">Budget: $4.5M | Progress: 25%</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>HyperGov</h3>
+        <p>Making civic governance transparent and accessible to everyone.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/analytics.html">Analytics</a></li>
+          <li><a href="/faq.html">FAQs</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="/feedback.html">Feedback</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Connect</h3>
+        <ul>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 HyperGov. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/js/authUtils.js"></script>
+  <script src="/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      updateNavigation();
+      if (!isAuthenticated()) {
+        window.location.href = '/auth.html';
+        return;
+      }
+      
+      // Initialize all charts
+      initializeCharts();
+    });
+
+    function initializeCharts() {
+      // Budget Distribution Chart
+      new Chart(document.getElementById('budgetChart'), {
+        type: 'doughnut',
+        data: {
+          labels: ['Infrastructure', 'Parks & Recreation', 'Education', 'Healthcare', 'Transportation'],
+          datasets: [{
+            data: [4200000, 1800000, 4500000, 1200000, 800000],
+            backgroundColor: ['#3498db', '#2ecc71', '#e74c3c', '#f39c12', '#9b59b6']
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+      });
+
+      // Project Status Chart
+      new Chart(document.getElementById('statusChart'), {
+        type: 'bar',
+        data: {
+          labels: ['Planning', 'In Progress', 'Completed', 'On Hold'],
+          datasets: [{
+            label: 'Projects',
+            data: [6, 12, 8, 2],
+            backgroundColor: ['#f39c12', '#3498db', '#2ecc71', '#e74c3c']
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+      });
+
+      // Engagement Trends Chart
+      new Chart(document.getElementById('engagementChart'), {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+          datasets: [{
+            label: 'User Engagement',
+            data: [320, 450, 380, 520, 680, 750],
+            borderColor: '#3498db',
+            backgroundColor: 'rgba(52, 152, 219, 0.1)',
+            fill: true
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+      });
+
+      // Geographic Distribution Chart
+      new Chart(document.getElementById('geoChart'), {
+        type: 'polarArea',
+        data: {
+          labels: ['North District', 'South District', 'East District', 'West District', 'Central'],
+          datasets: [{
+            data: [8, 6, 4, 3, 3],
+            backgroundColor: ['#3498db', '#2ecc71', '#e74c3c', '#f39c12', '#9b59b6']
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+      });
+
+      // Response Time Chart
+      new Chart(document.getElementById('responseChart'), {
+        type: 'line',
+        data: {
+          labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+          datasets: [{
+            label: 'Avg Response Time (hours)',
+            data: [24, 18, 12, 8],
+            borderColor: '#2ecc71',
+            backgroundColor: 'rgba(46, 204, 113, 0.1)',
+            fill: true
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+      });
+
+      // Feedback Categories Chart
+      new Chart(document.getElementById('feedbackChart'), {
+        type: 'radar',
+        data: {
+          labels: ['Quality', 'Timeline', 'Communication', 'Budget', 'Impact'],
+          datasets: [{
+            label: 'Satisfaction Score',
+            data: [8.5, 7.2, 9.1, 6.8, 8.9],
+            borderColor: '#e74c3c',
+            backgroundColor: 'rgba(231, 76, 60, 0.2)'
+          }]
+        },
+        options: { 
+          responsive: true, 
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            r: {
+              beginAtZero: true,
+              max: 10
+            }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

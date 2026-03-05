@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Setup Test - HyperGov</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f9fafb;
+    }
+    .test-card {
+      background: white;
+      padding: 20px;
+      margin: 10px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .success { color: #10b981; }
+    .error { color: #ef4444; }
+    h1 { color: #2563eb; }
+    .test-item { padding: 10px; border-left: 3px solid #2563eb; margin: 10px 0; background: #f9fafb; }
+    a { color: #2563eb; text-decoration: none; font-weight: 600; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <h1>🏛️ HyperGov Setup Test</h1>
+  
+  <div class="test-card">
+    <h2>✅ Frontend Setup Complete!</h2>
+    <p>If you can see this page, your server is running correctly.</p>
+  </div>
+
+  <div class="test-card">
+    <h3>📄 Available Pages</h3>
+    <div class="test-item">
+      <strong>Home:</strong> <a href="/index.html">Visit Home Page</a>
+    </div>
+    <div class="test-item">
+      <strong>Sign In:</strong> <a href="/signin.html">Visit Sign In Page</a>
+    </div>
+    <div class="test-item">
+      <strong>Sign Up:</strong> <a href="/signup.html">Visit Sign Up Page</a>
+    </div>
+    <div class="test-item">
+      <strong>About:</strong> <a href="/about.html">Visit About Page</a>
+    </div>
+    <div class="test-item">
+      <strong>FAQs:</strong> <a href="/faq.html">Visit FAQs Page</a>
+    </div>
+    <div class="test-item">
+      <strong>Analytics:</strong> <a href="/analytics.html">Visit Analytics Page</a>
+    </div>
+    <div class="test-item">
+      <strong>Feedback:</strong> <a href="/feedback.html">Visit Feedback Page</a>
+    </div>
+  </div>
+
+  <div class="test-card">
+    <h3>🧪 Quick Tests</h3>
+    <button onclick="testCSS()" style="padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 6px; cursor: pointer; margin: 5px;">Test CSS Loading</button>
+    <button onclick="testJS()" style="padding: 10px 20px; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer; margin: 5px;">Test JavaScript</button>
+    <button onclick="testAPI()" style="padding: 10px 20px; background: #f59e0b; color: white; border: none; border-radius: 6px; cursor: pointer; margin: 5px;">Test API</button>
+    <div id="testResults" style="margin-top: 20px;"></div>
+  </div>
+
+  <div class="test-card">
+    <h3>📚 Documentation</h3>
+    <p>Check these files for more information:</p>
+    <ul>
+      <li><strong>FRONTEND_README.md</strong> - Complete frontend documentation</li>
+      <li><strong>QUICKSTART.md</strong> - Quick start guide</li>
+      <li><strong>FRONTEND_SUMMARY.md</strong> - Implementation summary</li>
+    </ul>
+  </div>
+
+  <script>
+    function testCSS() {
+      const results = document.getElementById('testResults');
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = '/css/styles.css';
+      link.onload = () => {
+        results.innerHTML = '<div class="success">✅ CSS file loaded successfully!</div>';
+      };
+      link.onerror = () => {
+        results.innerHTML = '<div class="error">❌ CSS file failed to load</div>';
+      };
+      document.head.appendChild(link);
+    }
+
+    function testJS() {
+      const results = document.getElementById('testResults');
+      const script = document.createElement('script');
+      script.src = '/js/main.js';
+      script.onload = () => {
+        results.innerHTML = '<div class="success">✅ JavaScript file loaded successfully!</div>';
+      };
+      script.onerror = () => {
+        results.innerHTML = '<div class="error">❌ JavaScript file failed to load</div>';
+      };
+      document.body.appendChild(script);
+    }
+
+    async function testAPI() {
+      const results = document.getElementById('testResults');
+      try {
+        const response = await fetch('/health');
+        const data = await response.json();
+        if (response.ok) {
+          results.innerHTML = `<div class="success">✅ API is working! Status: ${data.status}</div>`;
+        } else {
+          results.innerHTML = '<div class="error">❌ API returned an error</div>';
+        }
+      } catch (error) {
+        results.innerHTML = '<div class="error">❌ Failed to connect to API</div>';
+      }
+    }
+  </script>
+</body>
+</html>

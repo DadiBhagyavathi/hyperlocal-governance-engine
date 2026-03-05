@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQs - HyperGov</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/" class="logo">🏛️ HyperGov</a>
+      <button class="mobile-menu-toggle" onclick="toggleMenu()">☰</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/analytics.html">Analytics</a></li>
+        <li><a href="/faq.html">FAQs</a></li>
+        <li><a href="/feedback.html">Feedback</a></li>
+        <li><a href="/auth.html" class="btn btn-secondary">Sign In</a></li>
+        <li><a href="/auth.html" class="btn btn-primary">Sign Up</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="faq-container">
+    <h2 class="section-title">Frequently Asked Questions</h2>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>What is HyperGov?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>HyperGov is a geo-fencing based civic transparency platform that provides real-time information about public development projects in your area. We help citizens understand how public funds are being used and track project progress.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>How does geo-fencing work?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>Our platform uses the Haversine formula to calculate distances between your location and public projects. When you enter a project's geo-fence area, you automatically receive relevant information about that project.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>Is my location data tracked?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>No. We follow a privacy-first approach. Your location is only used temporarily to determine if you're near a project. We don't store, track, or sell your location data.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>What information can I see about projects?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>You can view budget allocations, project timelines, completion status, responsible authorities, expected community impact, and real-time progress updates for all public development projects.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>Is HyperGov free to use?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>Yes! HyperGov is completely free for citizens. Our mission is to make civic information accessible to everyone.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>How do I report issues with a project?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>You can use our Feedback page to report issues, ask questions, or provide suggestions about any project. Your feedback is sent directly to the relevant authorities.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>Which areas does HyperGov cover?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>We're continuously expanding our coverage. Currently, we focus on urban and suburban areas with active public development projects. Check the platform to see if your area is covered.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>How often is project information updated?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>Project information is updated in real-time as we receive updates from government agencies and project managers. You'll always see the most current information available.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>Can I receive notifications about specific projects?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>Yes! Once you create an account, you can customize your notification preferences to receive updates about projects you're interested in.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <span>How can I contact support?</span>
+        <span class="faq-icon">▼</span>
+      </div>
+      <div class="faq-answer">
+        <p>You can reach us through the Feedback page or email us directly. We typically respond within 24-48 hours.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>HyperGov</h3>
+        <p>Making civic governance transparent and accessible to everyone.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/analytics.html">Analytics</a></li>
+          <li><a href="/faq.html">FAQs</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="/feedback.html">Feedback</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Connect</h3>
+        <ul>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 HyperGov. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/js/authUtils.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/faq.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      updateNavigation();
+    });
+  </script>
+</body>
+</html>

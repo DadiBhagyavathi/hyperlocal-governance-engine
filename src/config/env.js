@@ -7,8 +7,7 @@ dotenv.config();
  */
 const required = [
   "PORT",
-  "NODE_ENV",
-  "JWT_SECRET"
+  "NODE_ENV"
 ];
 
 // Validate required env variables
@@ -20,7 +19,7 @@ required.forEach((key) => {
 });
 
 const env = {
-  port: Number(process.env.PORT) || 5000,
+  port: Number(process.env.PORT) || 3000,
 
   nodeEnv: process.env.NODE_ENV,
   isDev: process.env.NODE_ENV === "development",
@@ -31,7 +30,7 @@ const env = {
   databaseUrl: process.env.DATABASE_URL || null,
 
   // Security
-  jwtSecret: process.env.JWT_SECRET,
+  jwtSecret: process.env.JWT_SECRET || 'default_secret',
 
   // Business Config
   defaultGeofenceRadius:

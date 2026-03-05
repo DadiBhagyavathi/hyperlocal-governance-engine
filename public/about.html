@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - HyperGov</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    .about-hero {
+      background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+      color: white;
+      text-align: center;
+      padding: 4rem 2rem 2rem;
+    }
+    
+    .about-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+    
+    .mission-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin: 3rem 0;
+      align-items: center;
+    }
+    
+    .mission-content {
+      padding: 2rem;
+    }
+    
+    .mission-visual {
+      background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+      padding: 3rem;
+      border-radius: 15px;
+      text-align: center;
+      color: white;
+    }
+    
+    .stats-showcase {
+      background: #f8f9fa;
+      padding: 3rem 2rem;
+      border-radius: 15px;
+      margin: 3rem 0;
+      text-align: center;
+    }
+    
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    
+    .impact-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      border-top: 4px solid #3498db;
+    }
+    
+    .team-section {
+      background: #2c3e50;
+      color: white;
+      padding: 4rem 2rem;
+      text-align: center;
+      margin: 3rem 0;
+      border-radius: 15px;
+    }
+    
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    
+    .value-item {
+      padding: 1.5rem;
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+    }
+    
+    @media (max-width: 768px) {
+      .mission-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/" class="logo">🏛️ HyperGov</a>
+      <button class="mobile-menu-toggle" onclick="toggleMenu()">☰</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/analytics.html">Analytics</a></li>
+        <li><a href="/faq.html">FAQs</a></li>
+        <li><a href="/feedback.html">Feedback</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/auth.html" class="btn btn-secondary">Sign In</a></li>
+        <li><a href="/auth.html" class="btn btn-primary">Sign Up</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="about-hero">
+    <h1>🌟 About HyperGov</h1>
+    <p>Revolutionizing civic engagement through transparency and technology</p>
+  </section>
+
+  <div class="about-container">
+    <div class="mission-grid">
+      <div class="mission-content">
+        <h2>🎯 Our Mission</h2>
+        <p>HyperGov bridges the gap between citizens and local government by making public development projects transparent, accessible, and engaging.</p>
+        <p>We believe every citizen deserves to know how their tax money is spent and how public projects impact their daily lives.</p>
+      </div>
+      <div class="mission-visual">
+        <h3>📍 Location-Aware Governance</h3>
+        <p>Get notified about projects in your area automatically</p>
+        <div style="font-size: 3rem; margin: 1rem 0;">🏗️</div>
+        <p>Real-time updates on budget, progress, and impact</p>
+      </div>
+    </div>
+
+    <div class="stats-showcase">
+      <h2>📊 Our Impact So Far</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 2rem; margin-top: 2rem;">
+        <div>
+          <div style="font-size: 2.5rem; font-weight: bold; color: #3498db;">24</div>
+          <div>Active Projects Tracked</div>
+        </div>
+        <div>
+          <div style="font-size: 2.5rem; font-weight: bold; color: #3498db;">$12.5M</div>
+          <div>Budget Transparency</div>
+        </div>
+        <div>
+          <div style="font-size: 2.5rem; font-weight: bold; color: #3498db;">1,247</div>
+          <div>Citizens Engaged</div>
+        </div>
+        <div>
+          <div style="font-size: 2.5rem; font-weight: bold; color: #3498db;">87%</div>
+          <div>Satisfaction Rate</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>🚀 How We're Making a Difference</h2>
+    <div class="impact-grid">
+      <div class="impact-card">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
+        <h3>Transparency First</h3>
+        <p>Every project detail is accessible - from budget allocation to completion timelines, citizens get the full picture.</p>
+      </div>
+      <div class="impact-card">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">📱</div>
+        <h3>Mobile-First Design</h3>
+        <p>78% of our users access HyperGov on mobile. We've optimized every interaction for on-the-go civic engagement.</p>
+      </div>
+      <div class="impact-card">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">🔔</div>
+        <h3>Smart Notifications</h3>
+        <p>Get relevant updates about projects that matter to you, when you need them, without information overload.</p>
+      </div>
+      <div class="impact-card">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">🛡️</div>
+        <h3>Privacy Protected</h3>
+        <p>Your location and personal data stay private. We believe in transparency for governance, privacy for citizens.</p>
+      </div>
+    </div>
+
+    <div class="team-section">
+      <h2>💡 Our Vision</h2>
+      <p style="font-size: 1.2rem; margin-bottom: 2rem;">A world where every citizen is informed, engaged, and empowered to participate in their local governance.</p>
+      
+      <div class="values-grid">
+        <div class="value-item">
+          <h4>🎯 Transparency</h4>
+          <p>Open, honest communication about all public projects and spending.</p>
+        </div>
+        <div class="value-item">
+          <h4>🔒 Privacy</h4>
+          <p>Your data belongs to you. We never track or sell personal information.</p>
+        </div>
+        <div class="value-item">
+          <h4>♿ Accessibility</h4>
+          <p>Civic information should be easy to understand and access for everyone.</p>
+        </div>
+        <div class="value-item">
+          <h4>🤝 Community</h4>
+          <p>Building stronger connections between citizens and their government.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="background: white; padding: 3rem; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); text-align: center;">
+      <h2>🛠️ Built with Modern Technology</h2>
+      <p>Our platform uses cutting-edge technology to ensure reliability, security, and scalability:</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+        <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+          <strong>🟢 Node.js & Express</strong><br>
+          <small>Robust backend services</small>
+        </div>
+        <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+          <strong>🟦 PostgreSQL</strong><br>
+          <small>Secure data management</small>
+        </div>
+        <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+          <strong>⚡ Prisma ORM</strong><br>
+          <small>Efficient database operations</small>
+        </div>
+        <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+          <strong>🌍 Geo-fencing</strong><br>
+          <small>Precise location services</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>HyperGov</h3>
+        <p>Making civic governance transparent and accessible to everyone.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/analytics.html">Analytics</a></li>
+          <li><a href="/faq.html">FAQs</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="/feedback.html">Feedback</a></li>
+          <li><a href="/contact.html">Contact Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Connect</h3>
+        <ul>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 HyperGov. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/js/authUtils.js"></script>
+  <script src="/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      updateNavigation();
+    });
+  </script>
+</body>
+</html>

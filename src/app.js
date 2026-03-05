@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 
 const env = require("./config/env");
 const logger = require("./config/logger");
@@ -18,6 +19,9 @@ app.use(express.json({ limit: "10kb" }));
 app.use(requestLogger);
 app.use(rateLimiter);
 
+/* ---------- Static Files ---------- */
+app.use(express.static(path.join(__dirname, "../public")));
+
 /* ---------- Health Check ---------- */
 app.get("/health", (req, res) => {
   res.json({
@@ -31,8 +35,8 @@ app.get("/health", (req, res) => {
 /* ---------- API Routes ---------- */
 app.use("/api/v1", routes);
 
-/* ---------- 404 Handler ---------- */
-app.use((req, res) => {
+/* ---------- 404 Handler for API ---------- */
+app.use("/api", (req, res) => {
   res.status(404).json({
     success: false,
     message: "API endpoint not found",
