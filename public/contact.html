@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - HyperGov</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    .contact-hero {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 4rem 2rem 2rem;
+    }
+    
+    .contact-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+    
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      margin: 3rem 0;
+    }
+    
+    .contact-form {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    }
+    
+    .contact-info {
+      padding: 2rem;
+    }
+    
+    .contact-method {
+      display: flex;
+      align-items: center;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    
+    .contact-method:hover {
+      transform: translateY(-2px);
+    }
+    
+    .contact-icon {
+      font-size: 2rem;
+      margin-right: 1rem;
+      width: 60px;
+      text-align: center;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #2c3e50;
+    }
+    
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #3498db;
+      box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+    
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    
+    .submit-btn {
+      width: 100%;
+      padding: 1rem;
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .submit-btn:hover {
+      background: #2980b9;
+    }
+    
+    .faq-section {
+      background: #f8f9fa;
+      padding: 3rem 2rem;
+      border-radius: 15px;
+      margin: 3rem 0;
+    }
+    
+    .faq-item {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      border-left: 4px solid #3498db;
+    }
+    
+    .faq-section {
+      background: #f8f9fa;
+      padding: 3rem 2rem;
+      border-radius: 15px;
+      margin: 3rem 0;
+    }
+    
+    .faq-item {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      border-left: 4px solid #3498db;
+    }
+    
+    @media (max-width: 768px) {
+      .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/" class="logo">🏛️ HyperGov</a>
+      <button class="mobile-menu-toggle" onclick="toggleMenu()">☰</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/analytics.html">Analytics</a></li>
+        <li><a href="/faq.html">FAQs</a></li>
+        <li><a href="/feedback.html">Feedback</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/auth.html" class="btn btn-secondary">Sign In</a></li>
+        <li><a href="/auth.html" class="btn btn-primary">Sign Up</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="contact-hero">
+    <h1>📞 Get in Touch</h1>
+    <p>We're here to help make civic governance more transparent</p>
+  </section>
+
+  <div class="contact-container">
+    <div class="contact-grid">
+      <div class="contact-form">
+        <h2>Send us a Message</h2>
+        <form id="contactForm">
+          <div class="form-group">
+            <label for="name">Full Name *</label>
+            <input type="text" id="name" name="name" required placeholder="Your full name">
+          </div>
+          
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" name="email" required placeholder="your@email.com">
+          </div>
+          
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="+1 (555) 123-4567">
+          </div>
+          
+          <div class="form-group">
+            <label for="subject">Subject *</label>
+            <select id="subject" name="subject" required>
+              <option value="">Select a topic</option>
+              <option value="general">General Inquiry</option>
+              <option value="technical">Technical Support</option>
+              <option value="partnership">Partnership Opportunity</option>
+              <option value="media">Media Inquiry</option>
+              <option value="government">Government Collaboration</option>
+              <option value="feedback">Platform Feedback</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="message">Message *</label>
+            <textarea id="message" name="message" required placeholder="Tell us how we can help you..."></textarea>
+          </div>
+          
+          <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+        
+        <div id="contactAlert" style="margin-top: 1rem;"></div>
+      </div>
+
+      <div class="contact-info">
+        <h2>Contact Information</h2>
+        
+        <div class="contact-method">
+          <div class="contact-icon">📧</div>
+          <div>
+            <h4>Email Us</h4>
+            <p>hello@hypergov.com</p>
+            <small>We typically respond within 24 hours</small>
+          </div>
+        </div>
+        
+        <div class="contact-method">
+          <div class="contact-icon">📱</div>
+          <div>
+            <h4>Call Us</h4>
+            <p>+1 (555) 123-4567</p>
+            <small>Mon-Fri, 9 AM - 6 PM EST</small>
+          </div>
+        </div>
+        
+        <div class="contact-method">
+          <div class="contact-icon">💬</div>
+          <div>
+            <h4>Live Chat</h4>
+            <p>Available on our platform</p>
+            <small>Real-time support for registered users</small>
+          </div>
+        </div>
+        
+        <div class="contact-method">
+          <div class="contact-icon">🏢</div>
+          <div>
+            <h4>Office Address</h4>
+            <p>123 Civic Center Drive<br>Democracy City, DC 20001</p>
+            <small>Visitors by appointment only</small>
+          </div>
+        </div>
+        
+        <div class="contact-method">
+          <div class="contact-icon">🐦</div>
+          <div>
+            <h4>Social Media</h4>
+            <p>@HyperGov on Twitter</p>
+            <small>Follow us for updates and announcements</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background: #2c3e50; color: white; padding: 3rem; border-radius: 15px; text-align: center;">
+      <h2>🚀 Ready to Get Started?</h2>
+      <p style="font-size: 1.2rem; margin-bottom: 2rem;">Join thousands of citizens already using HyperGov to stay informed about their local government.</p>
+      <a href="/auth.html" class="btn" style="background: white; color: #2c3e50; padding: 1rem 2rem; text-decoration: none; border-radius: 8px; font-weight: bold;">Sign Up Free</a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>HyperGov</h3>
+        <p>Making civic governance transparent and accessible to everyone.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/analytics.html">Analytics</a></li>
+          <li><a href="/faq.html">FAQs</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Support</h3>
+        <ul>
+          <li><a href="/feedback.html">Feedback</a></li>
+          <li><a href="/contact.html">Contact Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Connect</h3>
+        <ul>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 HyperGov. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/js/authUtils.js"></script>
+  <script src="/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      updateNavigation();
+      
+      // Contact form handler
+      document.getElementById('contactForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = {
+          name: document.getElementById('name').value,
+          email: document.getElementById('email').value,
+          phone: document.getElementById('phone').value,
+          subject: document.getElementById('subject').value,
+          message: document.getElementById('message').value
+        };
+        
+        const alertContainer = document.getElementById('contactAlert');
+        
+        try {
+          // Simulate API call
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          
+          alertContainer.innerHTML = '<div style="padding: 1rem; background: #d4edda; color: #155724; border-radius: 8px;">✅ Thank you! Your message has been sent successfully. We\'ll get back to you within 24 hours.</div>';
+          
+          // Reset form
+          document.getElementById('contactForm').reset();
+          
+        } catch (error) {
+          alertContainer.innerHTML = '<div style="padding: 1rem; background: #f8d7da; color: #721c24; border-radius: 8px;">❌ Sorry, there was an error sending your message. Please try again or contact us directly.</div>';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

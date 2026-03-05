@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Government Admin - HyperGov</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    .admin-container {
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    
+    .admin-header {
+      background: #2c3e50;
+      color: white;
+      padding: 2rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    
+    .admin-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .admin-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    
+    .project-form {
+      display: grid;
+      gap: 1rem;
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+    }
+    
+    .btn-admin {
+      padding: 0.75rem 1.5rem;
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    
+    .project-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    
+    .project-item {
+      padding: 1rem;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/" class="logo">🏛️ HyperGov Admin</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/admin.html">Admin Panel</a></li>
+        <li><a href="/analytics.html">Analytics</a></li>
+        <li><a href="#" onclick="logout()" class="btn btn-secondary">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="admin-container">
+    <div class="admin-header">
+      <h1>🏛️ Government Administration Panel</h1>
+      <p>Manage civic projects and engage with citizens</p>
+    </div>
+
+    <div class="admin-grid">
+      <div class="admin-card">
+        <h3>📝 Add New Project</h3>
+        <form class="project-form" id="projectForm">
+          <div class="form-group">
+            <label>Project Title</label>
+            <input type="text" id="title" required placeholder="Main Street Renovation">
+          </div>
+          
+          <div class="form-group">
+            <label>Description</label>
+            <textarea id="description" required placeholder="Project details..."></textarea>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Budget ($)</label>
+              <input type="number" id="budget" required placeholder="2500000">
+            </div>
+            <div class="form-group">
+              <label>Status</label>
+              <select id="status">
+                <option value="PLANNING">Planning</option>
+                <option value="IN_PROGRESS">In Progress</option>
+                <option value="COMPLETED">Completed</option>
+                <option value="ON_HOLD">On Hold</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Latitude</label>
+              <input type="number" step="any" id="latitude" required placeholder="40.7128">
+            </div>
+            <div class="form-group">
+              <label>Longitude</label>
+              <input type="number" step="any" id="longitude" required placeholder="-74.0060">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Start Date</label>
+              <input type="date" id="startDate" required>
+            </div>
+            <div class="form-group">
+              <label>Progress (%)</label>
+              <input type="number" id="progress" min="0" max="100" value="0">
+            </div>
+          </div>
+          
+          <button type="submit" class="btn-admin">Add Project</button>
+        </form>
+      </div>
+
+      <div class="admin-card">
+        <h3>📊 Active Projects</h3>
+        <div class="project-list" id="projectList">
+          <div class="project-item">
+            <h4>Main Street Renovation</h4>
+            <p>Budget: $2.5M | Progress: 75% | Status: In Progress</p>
+            <small>Location: 40.7128, -74.0060</small>
+          </div>
+          <div class="project-item">
+            <h4>Community Park Development</h4>
+            <p>Budget: $1.8M | Progress: 45% | Status: In Progress</p>
+            <small>Location: 40.7589, -73.9851</small>
+          </div>
+          <div class="project-item">
+            <h4>Water Supply Enhancement</h4>
+            <p>Budget: $3.2M | Progress: 90% | Status: In Progress</p>
+            <small>Location: 40.7505, -73.9934</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <h3>📈 Quick Stats</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; text-align: center;">
+        <div>
+          <div style="font-size: 2rem; color: #3498db; font-weight: bold;">24</div>
+          <div>Total Projects</div>
+        </div>
+        <div>
+          <div style="font-size: 2rem; color: #3498db; font-weight: bold;">$12.5M</div>
+          <div>Total Budget</div>
+        </div>
+        <div>
+          <div style="font-size: 2rem; color: #3498db; font-weight: bold;">1,247</div>
+          <div>Citizens Engaged</div>
+        </div>
+        <div>
+          <div style="font-size: 2rem; color: #3498db; font-weight: bold;">87%</div>
+          <div>Satisfaction Rate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/authUtils.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const user = getUser();
+      if (!user || user.role !== 'GOVERNMENT') {
+        alert('Access denied. Government credentials required.');
+        window.location.href = '/auth.html';
+        return;
+      }
+      
+      document.getElementById('projectForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const projectData = {
+          title: document.getElementById('title').value,
+          description: document.getElementById('description').value,
+          budget: parseFloat(document.getElementById('budget').value),
+          status: document.getElementById('status').value,
+          latitude: parseFloat(document.getElementById('latitude').value),
+          longitude: parseFloat(document.getElementById('longitude').value),
+          startDate: document.getElementById('startDate').value,
+          progress: parseInt(document.getElementById('progress').value)
+        };
+        
+        try {
+          const response = await fetch('/api/v1/projects', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(projectData)
+          });
+          
+          if (response.ok) {
+            alert('Project added successfully!');
+            document.getElementById('projectForm').reset();
+            loadProjects();
+          } else {
+            alert('Error adding project');
+          }
+        } catch (error) {
+          alert('Network error');
+        }
+      });
+    });
+    
+    async function loadProjects() {
+      // Refresh project list
+      location.reload();
+    }
+  </script>
+</body>
+</html>

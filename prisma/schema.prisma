@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(CITIZEN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  feedbacks Feedback[]
+  @@map("users")
+}
+
+model Project {
+  id          String        @id @default(cuid())
+  title       String
+  description String
+  budget      Float
+  status      ProjectStatus @default(PLANNING)
+  progress    Int           @default(0)
+  latitude    Float
+  longitude   Float
+  radius      Float         @default(1000)
+  startDate   DateTime
+  endDate     DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  
+  feedbacks Feedback[]
+  @@map("projects")
+}
+
+model Feedback {
+  id        String   @id @default(cuid())
+  message   String
+  rating    Int
+  userId    String
+  projectId String
+  createdAt DateTime @default(now())
+  
+  user    User    @relation(fields: [userId], references: [id])
+  project Project @relation(fields: [projectId], references: [id])
+  
+  @@map("feedbacks")
+}
+
+enum Role {
+  CITIZEN
+  GOVERNMENT
+  ADMIN
+}
+
+enum ProjectStatus {
+  PLANNING
+  IN_PROGRESS
+  COMPLETED
+  ON_HOLD
+}

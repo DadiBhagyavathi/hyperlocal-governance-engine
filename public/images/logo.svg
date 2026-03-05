@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e40af;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Building/Government Icon -->
+  <rect x="20" y="40" width="60" height="50" fill="url(#grad)" rx="2"/>
+  <rect x="30" y="50" width="10" height="10" fill="white" opacity="0.8"/>
+  <rect x="45" y="50" width="10" height="10" fill="white" opacity="0.8"/>
+  <rect x="60" y="50" width="10" height="10" fill="white" opacity="0.8"/>
+  <rect x="30" y="65" width="10" height="10" fill="white" opacity="0.8"/>
+  <rect x="45" y="65" width="10" height="10" fill="white" opacity="0.8"/>
+  <rect x="60" y="65" width="10" height="10" fill="white" opacity="0.8"/>
+  
+  <!-- Roof -->
+  <polygon points="50,15 15,40 85,40" fill="url(#grad)"/>
+  
+  <!-- Location Pin -->
+  <circle cx="75" cy="25" r="12" fill="#10b981"/>
+  <circle cx="75" cy="23" r="5" fill="white"/>
+</svg>

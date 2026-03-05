@@ -6,6 +6,12 @@ const logger = require("./logger");
  * Connect to MongoDB with production-grade configuration
  */
 const connectDB = async () => {
+  // Skip DB connection if no URI provided
+  if (!env.mongoUri || env.mongoUri === 'mongodb://localhost:27017/hypergov') {
+    logger.warn("MongoDB URI not configured - running without database");
+    return;
+  }
+
   try {
     mongoose.set("strictQuery", true);
 
@@ -47,8 +53,10 @@ const connectDB = async () => {
       error: error.message,
     });
 
-    // Fail fast in production
-    process.exit(1);
+    // Don't fail in development
+    if (env.isProd) {
+      process.exit(1);
+    }
   }
 };
 
