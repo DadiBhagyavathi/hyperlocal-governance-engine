@@ -165,6 +165,26 @@
 
     <div class="charts-grid">
       <div class="chart-card">
+        <h3>📊 Complaints by Category</h3>
+        <canvas id="categoryChart" width="300" height="180"></canvas>
+      </div>
+      
+      <div class="chart-card">
+        <h3>📍 Complaints by Location</h3>
+        <canvas id="locationChart" width="300" height="180"></canvas>
+      </div>
+      
+      <div class="chart-card">
+        <h3>✅ Resolved vs Unresolved</h3>
+        <canvas id="statusComplaintChart" width="300" height="180"></canvas>
+      </div>
+      
+      <div class="chart-card">
+        <h3>📈 Complaint Trends</h3>
+        <canvas id="trendChart" width="300" height="180"></canvas>
+      </div>
+
+      <div class="chart-card">
         <h3>📈 Project Budget Distribution</h3>
         <canvas id="budgetChart" width="300" height="180"></canvas>
       </div>
@@ -302,7 +322,78 @@
       
       // Initialize all charts
       initializeCharts();
+      loadComplaintAnalytics();
     });
+
+    async function loadComplaintAnalytics() {
+      try {
+        const response = await fetch('/api/v1/complaints/analytics');
+        const result = await response.json();
+        
+        if (result.success) {
+          const data = result.data;
+          
+          // Category Chart
+          new Chart(document.getElementById('categoryChart'), {
+            type: 'bar',
+            data: {
+              labels: data.byCategory.map(c => c.name),
+              datasets: [{
+                label: 'Complaints',
+                data: data.byCategory.map(c => c.count),
+                backgroundColor: ['#3498db', '#e74c3c', '#27ae60', '#f39c12', '#9b59b6']
+              }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+          });
+          
+          // Location Chart
+          new Chart(document.getElementById('locationChart'), {
+            type: 'doughnut',
+            data: {
+              labels: data.byLocation.map(l => l.name),
+              datasets: [{
+                data: data.byLocation.map(l => l.count),
+                backgroundColor: ['#3498db', '#e74c3c', '#27ae60', '#f39c12', '#9b59b6', '#1abc9c']
+              }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+          });
+          
+          // Status Chart
+          new Chart(document.getElementById('statusComplaintChart'), {
+            type: 'pie',
+            data: {
+              labels: ['Resolved', 'Unresolved'],
+              datasets: [{
+                data: [data.byStatus.resolved, data.byStatus.unresolved],
+                backgroundColor: ['#27ae60', '#e74c3c']
+              }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+          });
+          
+          // Trend Chart
+          new Chart(document.getElementById('trendChart'), {
+            type: 'line',
+            data: {
+              labels: data.byDate.map(d => d.date),
+              datasets: [{
+                label: 'Complaints',
+                data: data.byDate.map(d => d.count),
+                borderColor: '#3498db',
+                backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                fill: true,
+                tension: 0.4
+              }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+          });
+        }
+      } catch (error) {
+        console.error('Error loading complaint analytics:', error);
+      }
+    }
 
     function initializeCharts() {
       // Budget Distribution Chart

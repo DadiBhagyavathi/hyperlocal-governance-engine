@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Governance Dashboard - HyperGov</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .dashboard-container { max-width: 1400px; margin: 2rem auto; padding: 0 1rem; }
+    .page-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 3rem 1rem; text-align: center; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    .stat-card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; }
+    .stat-value { font-size: 2.5rem; font-weight: bold; color: #3498db; }
+    .stat-label { color: #7f8c8d; margin-top: 0.5rem; }
+    .chart-card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/" class="logo">🏛️ HyperGov</a>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/development-proof.html">Development Proof</a></li>
+        <li><a href="/governance-dashboard.html" class="active">Dashboard</a></li>
+        <li><a href="/admin-dashboard.html">Admin</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="page-header">
+    <h1>📊 Governance Awareness Dashboard</h1>
+    <p>Real-time civic engagement metrics</p>
+  </div>
+
+  <div class="dashboard-container">
+    <div class="stats-grid" id="statsGrid">
+      <div style="text-align: center; padding: 2rem;">Loading analytics...</div>
+    </div>
+
+    <div class="chart-card">
+      <h3>📈 Engagement Trends</h3>
+      <canvas id="engagementChart" height="100"></canvas>
+    </div>
+  </div>
+
+  <script>
+    async function loadAnalytics() {
+      try {
+        const response = await fetch('/api/analytics');
+        const result = await response.json();
+        
+        if (result.success) {
+          const data = result.data;
+          const grid = document.getElementById('statsGrid');
+          grid.innerHTML = `
+            <div class="stat-card">
+              <div class="stat-value">${data.citizensReached.toLocaleString()}</div>
+              <div class="stat-label">👥 Citizens Reached</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">${data.engagementRate}%</div>
+              <div class="stat-label">📊 Engagement Rate</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">${data.feedbackCollected}</div>
+              <div class="stat-label">💬 Feedback Collected</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" style="font-size: 1.2rem;">${data.topProject}</div>
+              <div class="stat-label">🏆 Top Project</div>
+            </div>
+          `;
+
+          new Chart(document.getElementById('engagementChart'), {
+            type: 'line',
+            data: {
+              labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+              datasets: [{
+                label: 'Engagement',
+                data: [320, 450, 380, 520, 680, 750],
+                borderColor: '#3498db',
+                backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                fill: true,
+                tension: 0.4
+              }]
+            },
+            options: { responsive: true, maintainAspectRatio: true }
+          });
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    loadAnalytics();
+  </script>
+</body>
+</html>

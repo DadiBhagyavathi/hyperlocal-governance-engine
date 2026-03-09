@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "category": "Water Supply",
+    "location": "Ward 17",
+    "description": "No water supply for 3 days",
+    "lat": 28.6139,
+    "lng": 77.2090,
+    "timestamp": "2024-01-20T10:30:00Z",
+    "status": "unresolved"
+  },
+  {
+    "id": 2,
+    "category": "Water Supply",
+    "location": "Ward 17",
+    "description": "Water pressure very low",
+    "lat": 28.6140,
+    "lng": 77.2091,
+    "timestamp": "2024-01-20T11:45:00Z",
+    "status": "unresolved"
+  },
+  {
+    "id": 3,
+    "category": "Water Supply",
+    "location": "Ward 17",
+    "description": "Dirty water from tap",
+    "lat": 28.6141,
+    "lng": 77.2089,
+    "timestamp": "2024-01-20T14:20:00Z",
+    "status": "unresolved"
+  },
+  {
+    "id": 4,
+    "category": "Road Damage",
+    "location": "Ward 8",
+    "description": "Large pothole near market",
+    "lat": 28.6200,
+    "lng": 77.2150,
+    "timestamp": "2024-01-20T08:00:00Z",
+    "status": "resolved"
+  },
+  {
+    "id": 5,
+    "category": "Road Damage",
+    "location": "Ward 8",
+    "description": "Road cracks expanding",
+    "lat": 28.6201,
+    "lng": 77.2151,
+    "timestamp": "2024-01-20T12:30:00Z",
+    "status": "unresolved"
+  },
+  {
+    "id": 6,
+    "category": "Road Damage",
+    "location": "Ward 8",
+    "description": "Dangerous road condition",
+    "lat": 28.6202,
+    "lng": 77.2149,
+    "timestamp": "2024-01-20T16:45:00Z",
+    "status": "unresolved"
+  },
+  {
+    "id": 7,
+    "category": "Garbage Collection",
+    "location": "Ward 5",
+    "description": "Garbage not collected for 5 days",
+    "lat": 28.6100,
+    "lng": 77.2050,
+    "timestamp": "2024-01-19T10:00:00Z",
+    "status": "resolved"
+  },
+  {
+    "id": 8,
+    "category": "Garbage Collection",
+    "location": "Ward 5",
+    "description": "Overflowing bins",
+    "lat": 28.6101,
+    "lng": 77.2051,
+    "timestamp": "2024-01-20T08:30:00Z",
+    "status": "unresolved"
+  },
+  {
+    "id": 9,
+    "category": "Street Light",
+    "location": "Ward 12",
+    "description": "Street lights not working",
+    "lat": 28.6250,
+    "lng": 77.2200,
+    "timestamp": "2024-01-20T19:00:00Z",
+    "status": "unresolved"
+  },
+  {
+    "id": 10,
+    "category": "Street Light",
+    "location": "Ward 12",
+    "description": "Dark street at night",
+    "lat": 28.6251,
+    "lng": 77.2201,
+    "timestamp": "2024-01-20T20:15:00Z",
+    "status": "unresolved"
+  },
+  {
+    "id": 11,
+    "category": "Drainage",
+    "location": "Ward 3",
+    "description": "Blocked drainage causing flooding",
+    "lat": 28.6050,
+    "lng": 77.2000,
+    "timestamp": "2024-01-20T09:00:00Z",
+    "status": "unresolved"
+  },
+  {
+    "id": 12,
+    "category": "Drainage",
+    "location": "Ward 3",
+    "description": "Water logging on main road",
+    "lat": 28.6051,
+    "lng": 77.2001,
+    "timestamp": "2024-01-20T13:30:00Z",
+    "status": "unresolved"
+  }
+]

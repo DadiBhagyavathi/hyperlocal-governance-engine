@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Projects - HyperGov</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    .admin-container { max-width: 1400px; margin: 2rem auto; padding: 0 1rem; }
+    .page-header { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); color: white; padding: 3rem 1rem; text-align: center; }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem; margin-top: 2rem; }
+    .project-card { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .btn-delete { padding: 0.5rem 1rem; background: #e74c3c; color: white; border: none; border-radius: 5px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/" class="logo">🏛️ HyperGov Admin</a>
+      <ul class="nav-links">
+        <li><a href="/admin-dashboard.html">Dashboard</a></li>
+        <li><a href="/admin-projects.html" class="active">Projects</a></li>
+        <li><a href="/admin-complaints.html">Complaints</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="page-header">
+    <h1>🏗️ Projects Management</h1>
+    <p>View and manage all projects</p>
+  </div>
+
+  <div class="admin-container">
+    <div id="projectsGrid" class="projects-grid">
+      <div style="text-align: center; padding: 3rem;">Loading projects...</div>
+    </div>
+  </div>
+
+  <script>
+    async function loadProjects() {
+      try {
+        const response = await fetch('/api/projects');
+        const result = await response.json();
+        const grid = document.getElementById('projectsGrid');
+        
+        if (result.success && result.data.length > 0) {
+          grid.innerHTML = result.data.map(p => `
+            <div class="project-card">
+              <h3>${p.name}</h3>
+              <p><strong>Location:</strong> ${p.location}</p>
+              <p><strong>Ward:</strong> ${p.ward}</p>
+              <p><strong>Category:</strong> ${p.category}</p>
+              <p><strong>Budget:</strong> ₹${(p.budget / 100000).toFixed(2)}L</p>
+              <p><strong>Completed:</strong> ${new Date(p.completionDate).toLocaleDateString()}</p>
+              <button class="btn-delete" onclick="deleteProject('${p._id}')">Delete</button>
+            </div>
+          `).join('');
+        } else {
+          grid.innerHTML = '<div style="text-align: center; padding: 3rem;">No projects found</div>';
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    async function deleteProject(id) {
+      if (!confirm('Are you sure you want to delete this project?')) return;
+      
+      try {
+        const response = await fetch(`/api/projects/${id}`, { method: 'DELETE' });
+        const result = await response.json();
+        
+        if (result.success) {
+          alert('✅ Project deleted successfully!');
+          loadProjects();
+        } else {
+          alert('❌ Error: ' + result.message);
+        }
+      } catch (error) {
+        alert('❌ Error deleting project');
+      }
+    }
+
+    loadProjects();
+  </script>
+</body>
+</html>

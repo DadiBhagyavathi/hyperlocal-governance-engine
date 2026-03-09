@@ -10,5 +10,6 @@ router.use("/geofence", require("./modules/geofence/geofence.routes"));
 router.use("/analytics", require("./modules/analytics/analytics.routes"));
 router.use("/auth", require("./modules/auth/auth.routes"));
 router.use("/feedback", require("./modules/feedback/feedback.routes"));
+router.use("/complaints", require("./modules/complaints/complaints.routes"));
 
 module.exports = router;

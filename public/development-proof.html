@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Development Proof - HyperGov</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    .proof-container { max-width: 1400px; margin: 2rem auto; padding: 0 1rem; }
+    .page-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 3rem 1rem; text-align: center; }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 2rem; margin-top: 2rem; }
+    .project-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .image-box { position: relative; height: 250px; overflow: hidden; }
+    .image-box img { width: 100%; height: 100%; object-fit: cover; }
+    .label { position: absolute; top: 10px; left: 10px; padding: 5px 12px; border-radius: 5px; font-weight: bold; color: white; }
+    .before { background: #e74c3c; }
+    .after { background: #27ae60; }
+    .project-info { padding: 1.5rem; }
+    .project-title { font-size: 1.3rem; font-weight: bold; margin-bottom: 0.5rem; }
+    .project-meta { color: #7f8c8d; font-size: 0.9rem; margin-bottom: 1rem; }
+    .project-budget { background: #f8f9fa; padding: 0.5rem 1rem; border-radius: 5px; display: inline-block; margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/" class="logo">🏛️ HyperGov</a>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/development-proof.html" class="active">Development Proof</a></li>
+        <li><a href="/governance-dashboard.html">Dashboard</a></li>
+        <li><a href="/admin-dashboard.html">Admin</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="page-header">
+    <h1>🏗️ Verified Development Proof</h1>
+    <p>Real evidence of government projects - Before vs After</p>
+  </div>
+
+  <div class="proof-container">
+    <div id="projectsGrid" class="projects-grid">
+      <div style="text-align: center; padding: 3rem;">Loading projects...</div>
+    </div>
+  </div>
+
+  <script>
+    async function loadProjects() {
+      try {
+        const response = await fetch('/api/projects');
+        const result = await response.json();
+        
+        if (result.success && result.data.length > 0) {
+          const grid = document.getElementById('projectsGrid');
+          grid.innerHTML = result.data.map(p => `
+            <div class="project-card">
+              <div class="comparison">
+                <div class="image-box">
+                  <img src="${p.beforeImage}" alt="Before">
+                  <span class="label before">BEFORE</span>
+                </div>
+                <div class="image-box">
+                  <img src="${p.afterImage}" alt="After">
+                  <span class="label after">AFTER</span>
+                </div>
+              </div>
+              <div class="project-info">
+                <h3 class="project-title">${p.name}</h3>
+                <div class="project-meta">
+                  📍 ${p.location} | Ward ${p.ward} | ${p.category}
+                </div>
+                <p>${p.description}</p>
+                <div class="project-budget">💰 Budget: ₹${(p.budget / 100000).toFixed(2)}L</div>
+                <div style="margin-top: 0.5rem; color: #7f8c8d; font-size: 0.85rem;">
+                  ✅ Completed: ${new Date(p.completionDate).toLocaleDateString()}
+                </div>
+              </div>
+            </div>
+          `).join('');
+        } else {
+          document.getElementById('projectsGrid').innerHTML = '<div style="text-align: center; padding: 3rem;">No projects found</div>';
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('projectsGrid').innerHTML = '<div style="text-align: center; padding: 3rem; color: #e74c3c;">Error loading projects</div>';
+      }
+    }
+
+    loadProjects();
+  </script>
+</body>
+</html>
