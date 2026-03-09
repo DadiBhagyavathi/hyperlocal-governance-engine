@@ -11,4 +11,9 @@ router.use("/analytics", require("./modules/analytics/analytics.routes"));
 router.use("/auth", require("./modules/auth/auth.routes"));
 router.use("/feedback", require("./modules/feedback/feedback.routes"));
 
+// New Feature Routes
+router.use("/development-proof", require("./modules/developmentProof/proof.routes"));
+router.use("/awareness", require("./modules/awarenessAnalytics/analytics.routes"));
+router.use("/issue-detection", require("./modules/issueDetection/detection.routes"));
+
 module.exports = router;

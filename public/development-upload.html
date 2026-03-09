@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Development Proof - HyperGov Admin</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    .upload-container {
+      max-width: 800px;
+      margin: 3rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    .btn-submit {
+      background: #3498db;
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
+    }
+    .btn-submit:hover {
+      background: #2980b9;
+    }
+    .success-message {
+      background: #d4edda;
+      color: #155724;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      display: none;
+    }
+    .image-preview {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .preview-box {
+      border: 2px dashed #ddd;
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .preview-box img {
+      max-width: 100%;
+      max-height: 180px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/" class="logo">🏛️ HyperGov Admin</a>
+      <ul class="nav-links">
+        <li><a href="/admin.html">Dashboard</a></li>
+        <li><a href="/development-upload.html">Upload Proof</a></li>
+        <li><a href="/analytics.html">View Analytics</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="upload-container">
+    <h2>📸 Upload Development Proof</h2>
+    <p style="color: #7f8c8d; margin-bottom: 2rem;">Show citizens the real impact of development projects</p>
+
+    <div id="successMessage" class="success-message">
+      ✓ Development proof uploaded successfully!
+    </div>
+
+    <form id="proofForm">
+      <div class="form-group">
+        <label for="projectId">Project ID</label>
+        <input type="text" id="projectId" required placeholder="e.g., main-street-renovation">
+      </div>
+
+      <div class="form-group">
+        <label for="projectTitle">Project Title</label>
+        <input type="text" id="projectTitle" required placeholder="e.g., Main Street Renovation">
+      </div>
+
+      <div class="form-group">
+        <label for="beforeImage">Before Image URL</label>
+        <input type="url" id="beforeImage" required placeholder="https://example.com/before.jpg">
+      </div>
+
+      <div class="form-group">
+        <label for="afterImage">After Image URL</label>
+        <input type="url" id="afterImage" required placeholder="https://example.com/after.jpg">
+      </div>
+
+      <div class="image-preview">
+        <div class="preview-box" id="beforePreview">
+          <span style="color: #7f8c8d;">Before image preview</span>
+        </div>
+        <div class="preview-box" id="afterPreview">
+          <span style="color: #7f8c8d;">After image preview</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" required placeholder="Describe the transformation (e.g., Old damaged road → Modern 4-lane smart road)"></textarea>
+      </div>
+
+      <button type="submit" class="btn-submit">Upload Development Proof</button>
+    </form>
+
+    <div style="margin-top: 2rem; padding: 1rem; background: #e3f2fd; border-radius: 8px;">
+      <h4>💡 Tips for Great Before/After Photos:</h4>
+      <ul style="margin-left: 1.5rem; color: #2c3e50;">
+        <li>Take photos from the same angle</li>
+        <li>Use good lighting conditions</li>
+        <li>Show clear differences in development</li>
+        <li>Include landmarks for context</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // Image preview
+    document.getElementById('beforeImage').addEventListener('input', (e) => {
+      const url = e.target.value;
+      if (url) {
+        document.getElementById('beforePreview').innerHTML = `<img src="${url}" alt="Before">`;
+      }
+    });
+
+    document.getElementById('afterImage').addEventListener('input', (e) => {
+      const url = e.target.value;
+      if (url) {
+        document.getElementById('afterPreview').innerHTML = `<img src="${url}" alt="After">`;
+      }
+    });
+
+    // Form submission
+    document.getElementById('proofForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const data = {
+        projectId: document.getElementById('projectId').value,
+        projectTitle: document.getElementById('projectTitle').value,
+        beforeImage: document.getElementById('beforeImage').value,
+        afterImage: document.getElementById('afterImage').value,
+        description: document.getElementById('description').value
+      };
+
+      try {
+        const response = await fetch('/api/development-proof/upload', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          document.getElementById('successMessage').style.display = 'block';
+          document.getElementById('proofForm').reset();
+          document.getElementById('beforePreview').innerHTML = '<span style="color: #7f8c8d;">Before image preview</span>';
+          document.getElementById('afterPreview').innerHTML = '<span style="color: #7f8c8d;">After image preview</span>';
+          
+          setTimeout(() => {
+            document.getElementById('successMessage').style.display = 'none';
+          }, 5000);
+        }
+      } catch (error) {
+        alert('Error uploading proof. Please try again.');
+        console.error(error);
+      }
+    });
+  </script>
+</body>
+</html>

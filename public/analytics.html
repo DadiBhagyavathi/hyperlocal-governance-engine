@@ -218,6 +218,13 @@
     </div>
 
     <div class="analysis-section">
+      <h3>📸 Development Progress - Before & After</h3>
+      <div id="developmentProofs" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; margin-top: 1.5rem;">
+        <!-- Development proofs will load here -->
+      </div>
+    </div>
+
+    <div class="analysis-section">
       <h3>📋 Recent Project Timeline</h3>
       <div class="project-timeline">
         <div class="timeline-item">
@@ -302,7 +309,122 @@
       
       // Initialize all charts
       initializeCharts();
+      loadDevelopmentProofs();
     });
+
+    async function loadDevelopmentProofs() {
+      try {
+        const response = await fetch('/api/development-proof/all');
+        const data = await response.json();
+        
+        const container = document.getElementById('developmentProofs');
+        
+        if (!data.success || data.data.length === 0) {
+          // Show mock data for demo
+          container.innerHTML = `
+            <div style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+              <h4 style="color: #2c3e50; margin-bottom: 1rem;">Main Street Renovation</h4>
+              <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: center;">
+                <div>
+                  <div style="font-weight: bold; color: #7f8c8d; margin-bottom: 0.5rem;">BEFORE</div>
+                  <img src="https://images.unsplash.com/photo-1581094271901-8022df4466f9?w=400&h=250&fit=crop" 
+                       style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;" 
+                       alt="Before">
+                  <p style="font-size: 0.85rem; color: #7f8c8d; margin-top: 0.5rem;">Old damaged road with potholes</p>
+                </div>
+                <div style="font-size: 2rem; color: #27ae60;">→</div>
+                <div>
+                  <div style="font-weight: bold; color: #7f8c8d; margin-bottom: 0.5rem;">AFTER</div>
+                  <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=250&fit=crop" 
+                       style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;" 
+                       alt="After">
+                  <p style="font-size: 0.85rem; color: #7f8c8d; margin-top: 0.5rem;">Modern 4-lane smart road</p>
+                </div>
+              </div>
+              <div style="margin-top: 1rem; padding: 1rem; background: #e8f5e9; border-radius: 8px; border-left: 4px solid #27ae60;">
+                <strong style="color: #27ae60;">✓ Completed</strong> - Budget: $2.1M | Duration: 8 months | Citizens Benefited: 15,000+
+              </div>
+            </div>
+
+            <div style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+              <h4 style="color: #2c3e50; margin-bottom: 1rem;">Community Park Development</h4>
+              <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: center;">
+                <div>
+                  <div style="font-weight: bold; color: #7f8c8d; margin-bottom: 0.5rem;">BEFORE</div>
+                  <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&h=250&fit=crop" 
+                       style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;" 
+                       alt="Before">
+                  <p style="font-size: 0.85rem; color: #7f8c8d; margin-top: 0.5rem;">Unused vacant land</p>
+                </div>
+                <div style="font-size: 2rem; color: #27ae60;">→</div>
+                <div>
+                  <div style="font-weight: bold; color: #7f8c8d; margin-bottom: 0.5rem;">AFTER</div>
+                  <img src="https://images.unsplash.com/photo-1519331379826-f10be5486c6f?w=400&h=250&fit=crop" 
+                       style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;" 
+                       alt="After">
+                  <p style="font-size: 0.85rem; color: #7f8c8d; margin-top: 0.5rem;">Green park with playground</p>
+                </div>
+              </div>
+              <div style="margin-top: 1rem; padding: 1rem; background: #fff3e0; border-radius: 8px; border-left: 4px solid #f39c12;">
+                <strong style="color: #f39c12;">⏳ In Progress (65%)</strong> - Budget: $1.8M | Est. Completion: Mar 2025
+              </div>
+            </div>
+
+            <div style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+              <h4 style="color: #2c3e50; margin-bottom: 1rem;">Hospital Infrastructure Upgrade</h4>
+              <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: center;">
+                <div>
+                  <div style="font-weight: bold; color: #7f8c8d; margin-bottom: 0.5rem;">BEFORE</div>
+                  <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=400&h=250&fit=crop" 
+                       style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;" 
+                       alt="Before">
+                  <p style="font-size: 0.85rem; color: #7f8c8d; margin-top: 0.5rem;">Old hospital building</p>
+                </div>
+                <div style="font-size: 2rem; color: #27ae60;">→</div>
+                <div>
+                  <div style="font-weight: bold; color: #7f8c8d; margin-bottom: 0.5rem;">AFTER</div>
+                  <img src="https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=400&h=250&fit=crop" 
+                       style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;" 
+                       alt="After">
+                  <p style="font-size: 0.85rem; color: #7f8c8d; margin-top: 0.5rem;">Modern medical facility</p>
+                </div>
+              </div>
+              <div style="margin-top: 1rem; padding: 1rem; background: #e8f5e9; border-radius: 8px; border-left: 4px solid #27ae60;">
+                <strong style="color: #27ae60;">✓ Completed</strong> - Budget: $4.5M | Duration: 14 months | Capacity: 200 beds
+              </div>
+            </div>
+          `;
+          return;
+        }
+        
+        // Render actual data from API
+        container.innerHTML = data.data.map(proof => `
+          <div style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <h4 style="color: #2c3e50; margin-bottom: 1rem;">${proof.projectTitle || 'Project'}</h4>
+            <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: center;">
+              <div>
+                <div style="font-weight: bold; color: #7f8c8d; margin-bottom: 0.5rem;">BEFORE</div>
+                <img src="${proof.beforeImage}" 
+                     style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;" 
+                     alt="Before">
+              </div>
+              <div style="font-size: 2rem; color: #27ae60;">→</div>
+              <div>
+                <div style="font-weight: bold; color: #7f8c8d; margin-bottom: 0.5rem;">AFTER</div>
+                <img src="${proof.afterImage}" 
+                     style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;" 
+                     alt="After">
+              </div>
+            </div>
+            <div style="margin-top: 1rem; padding: 1rem; background: #e8f5e9; border-radius: 8px;">
+              <p style="color: #2c3e50;">${proof.description}</p>
+            </div>
+          </div>
+        `).join('');
+      } catch (error) {
+        console.error('Error loading development proofs:', error);
+      }
+    }
 
     function initializeCharts() {
       // Budget Distribution Chart
