@@ -147,4 +147,14 @@ MIT License - see LICENSE file for details
 
 ---
 
+## 📸 Screenshots
+
+![Screenshot 1](public/images/h1.png)
+
+![Screenshot 2](public/images/h2.png)
+
+![Screenshot 3](public/images/h3.png)
+
+---
+
 Built with ❤️ for transparent governance and civic engagement.
