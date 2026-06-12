@@ -3,527 +3,406 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Analytics - HyperGov</title>
+  <title>Analytics — HyperGov</title>
   <link rel="stylesheet" href="/css/styles.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    .analytics-container {
-      max-width: 1400px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-    
-    .stats-overview {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 3rem;
-    }
-    
-    .stat-card {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      text-align: center;
-      border-left: 4px solid #3498db;
-    }
-    
-    .stat-number {
-      font-size: 2.5rem;
-      font-weight: bold;
-      color: #3498db;
-      margin-bottom: 0.5rem;
-    }
-    
-    .stat-label {
-      color: #7f8c8d;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    
-    .charts-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-    
-    .chart-card {
-      background: white;
-      padding: 1rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      height: 350px;
-    }
-    
-    .chart-card h3 {
-      margin-bottom: 1rem;
-      color: #2c3e50;
-      font-size: 1.2rem;
-    }
-    
-    .analysis-section {
-      background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      margin-bottom: 2rem;
-    }
-    
-    .insights-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-      margin-top: 1.5rem;
-    }
-    
-    .insight-card {
-      padding: 1.5rem;
-      background: #f8f9fa;
-      border-radius: 8px;
-      border-left: 4px solid #e74c3c;
-    }
-    
-    .insight-card.positive {
-      border-left-color: #27ae60;
-    }
-    
-    .insight-card.warning {
-      border-left-color: #f39c12;
-    }
-    
-    .project-timeline {
-      margin-top: 2rem;
-    }
-    
-    .timeline-item {
-      display: flex;
-      align-items: center;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      background: #f8f9fa;
-      border-radius: 8px;
-      border-left: 4px solid #3498db;
-    }
-    
-    .timeline-date {
-      font-weight: bold;
-      color: #3498db;
-      margin-right: 1rem;
-      min-width: 100px;
-    }
+    body { background:#f0f4f8; }
+    .page { max-width:1400px; margin:2rem auto; padding:0 1rem; }
+
+    /* ── stat cards ── */
+    .stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:1rem; margin-bottom:2rem; }
+    .stat-card { background:white; padding:1.2rem 1rem; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,.08); text-align:center; border-top:4px solid #3498db; }
+    .stat-card.green  { border-top-color:#27ae60; }
+    .stat-card.orange { border-top-color:#f39c12; }
+    .stat-card.red    { border-top-color:#e74c3c; }
+    .stat-card.purple { border-top-color:#8b5cf6; }
+    .stat-num  { font-size:2rem; font-weight:700; color:#1a3c5e; }
+    .stat-lbl  { font-size:.78rem; color:#7f8c8d; text-transform:uppercase; letter-spacing:.5px; margin-top:.2rem; }
+
+    /* ── section headers ── */
+    .sec-title { font-size:1.2rem; font-weight:700; color:#1a3c5e; margin:2rem 0 1rem; display:flex; align-items:center; gap:.5rem; }
+
+    /* ── chart grid ── */
+    .chart-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:1.5rem; margin-bottom:2rem; }
+    .chart-card { background:white; border-radius:14px; box-shadow:0 2px 12px rgba(0,0,0,.08); padding:1.2rem; }
+    .chart-card h4 { margin:0 0 1rem; font-size:.95rem; color:#1a3c5e; }
+    .chart-wrap { position:relative; height:230px; }
+
+    /* ── ML metrics panel ── */
+    .ml-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; margin-bottom:2rem; }
+    .ml-card  { background:white; border-radius:14px; box-shadow:0 2px 12px rgba(0,0,0,.08); padding:1.4rem; }
+    .ml-card .model-name { font-size:1rem; font-weight:700; color:#1a3c5e; margin-bottom:.8rem; }
+    .metric-row { display:flex; justify-content:space-between; align-items:center; padding:.4rem 0; border-bottom:1px solid #f0f4f8; font-size:.88rem; }
+    .metric-row:last-child { border:none; }
+    .metric-val { font-weight:700; color:#27ae60; }
+    .metric-val.warn { color:#f39c12; }
+    .metric-val.bad  { color:#e74c3c; }
+
+    /* ── feat importance bars ── */
+    .fi-row  { display:flex; align-items:center; gap:.5rem; margin:.3rem 0; font-size:.8rem; }
+    .fi-lbl  { width:145px; flex-shrink:0; color:#444; }
+    .fi-track{ flex:1; background:#e8ecf0; border-radius:3px; height:10px; }
+    .fi-fill { height:10px; border-radius:3px; background:linear-gradient(90deg,#3498db,#27ae60); }
+    .fi-pct  { width:40px; text-align:right; color:#7f8c8d; }
+
+    /* ── feedback feed ── */
+    .feed-item { padding:.8rem; background:#f8fafc; border-radius:8px; border-left:3px solid #3498db; margin-bottom:.6rem; font-size:.85rem; }
+    .feed-item .stars { color:#f39c12; }
+
+    /* ── loading ── */
+    .loading { text-align:center; padding:2rem; color:#7f8c8d; font-style:italic; }
+    .pill { display:inline-block; padding:.2rem .7rem; border-radius:20px; font-size:.72rem; font-weight:700; }
+    .pill-green  { background:#d1fae5; color:#065f46; }
+    .pill-orange { background:#fef3c7; color:#92400e; }
+    .pill-red    { background:#fee2e2; color:#991b1b; }
+    .pill-blue   { background:#dbeafe; color:#1e40af; }
   </style>
 </head>
 <body>
-  <header>
-    <nav>
-      <a href="/" class="logo">🏛️ HyperGov</a>
-      <button class="mobile-menu-toggle" onclick="toggleMenu()">☰</button>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="/">Home</a></li>
-        <li><a href="/about.html">About</a></li>
-        <li><a href="/analytics.html">Analytics</a></li>
-        <li><a href="/faq.html">FAQs</a></li>
-        <li><a href="/feedback.html">Feedback</a></li>
-        <li><a href="/auth.html" class="btn btn-secondary">Sign In</a></li>
-        <li><a href="/auth.html" class="btn btn-primary">Sign Up</a></li>
-      </ul>
-    </nav>
-  </header>
+<header>
+  <nav>
+    <a href="/" class="logo">🏛️ HyperGov</a>
+    <button class="mobile-menu-toggle" onclick="toggleMenu()">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/">Home</a></li>
+      <li><a href="/dashboard.html">Dashboard</a></li>
+      <li><a href="/analytics.html" class="active">Analytics</a></li>
+      <li><a href="/ai-dashboard.html">AI Intelligence</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li id="navAuthBtn"><a href="/auth.html" class="btn btn-primary">Sign In</a></li>
+    </ul>
+  </nav>
+</header>
 
-  <div class="analytics-container">
-    <h2 class="section-title">📊 Civic Analytics Dashboard</h2>
+<div class="page">
+  <h2 class="sec-title" style="font-size:1.6rem; margin-top:0">📊 Civic Analytics Dashboard</h2>
+  <p style="color:#7f8c8d; margin-bottom:1.5rem; font-size:.9rem;">Live data from PostgreSQL · ML metrics from trained models</p>
 
-    <div class="stats-overview">
-      <div class="stat-card">
-        <div class="stat-number" id="totalProjects">24</div>
-        <div class="stat-label">Active Projects</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" id="totalBudget">$12.5M</div>
-        <div class="stat-label">Total Budget</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" id="completionRate">68%</div>
-        <div class="stat-label">Avg Completion</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" id="totalUsers">1,247</div>
-        <div class="stat-label">Active Citizens</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" id="notifications">3,892</div>
-        <div class="stat-label">Notifications Sent</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" id="satisfaction">87%</div>
-        <div class="stat-label">Satisfaction Rate</div>
-      </div>
-    </div>
-
-    <div class="charts-grid">
-      <div class="chart-card">
-        <h3>📈 Project Budget Distribution</h3>
-        <canvas id="budgetChart" width="300" height="180"></canvas>
-      </div>
-      
-      <div class="chart-card">
-        <h3>🏗️ Project Status Overview</h3>
-        <canvas id="statusChart" width="300" height="180"></canvas>
-      </div>
-      
-      <div class="chart-card">
-        <h3>📅 Monthly Engagement Trends</h3>
-        <canvas id="engagementChart" width="300" height="180"></canvas>
-      </div>
-      
-      <div class="chart-card">
-        <h3>🌍 Geographic Distribution</h3>
-        <canvas id="geoChart" width="300" height="180"></canvas>
-      </div>
-      
-      <div class="chart-card">
-        <h3>⏱️ Response Time Analysis</h3>
-        <canvas id="responseChart" width="300" height="180"></canvas>
-      </div>
-      
-      <div class="chart-card">
-        <h3>💬 Feedback Categories</h3>
-        <canvas id="feedbackChart" width="300" height="180"></canvas>
-      </div>
-    </div>
-
-    <div class="analysis-section">
-      <h3>🔍 Key Insights & Analysis</h3>
-      <div class="insights-grid">
-        <div class="insight-card positive">
-          <h4>✅ High Engagement</h4>
-          <p>Citizen engagement increased by 34% this quarter, with road infrastructure projects receiving the most attention.</p>
-        </div>
-        <div class="insight-card warning">
-          <h4>⚠️ Budget Overruns</h4>
-          <p>3 projects are currently 15% over budget. Recommend immediate review and cost optimization measures.</p>
-        </div>
-        <div class="insight-card positive">
-          <h4>📱 Mobile Usage</h4>
-          <p>78% of users access the platform via mobile devices, indicating strong mobile-first adoption.</p>
-        </div>
-        <div class="insight-card">
-          <h4>🕐 Peak Hours</h4>
-          <p>Most citizen activity occurs between 6-9 PM, suggesting optimal notification timing for maximum reach.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="analysis-section">
-      <h3>📸 Development Progress - Before & After</h3>
-      <div id="developmentProofs" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; margin-top: 1.5rem;">
-        <!-- Development proofs will load here -->
-      </div>
-    </div>
-
-    <div class="analysis-section">
-      <h3>📋 Recent Project Timeline</h3>
-      <div class="project-timeline">
-        <div class="timeline-item">
-          <div class="timeline-date">Dec 15</div>
-          <div>
-            <strong>Main Street Renovation</strong> - Phase 2 completed ahead of schedule
-            <br><small style="color: #7f8c8d;">Budget: $2.1M | Progress: 75%</small>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-date">Dec 12</div>
-          <div>
-            <strong>Community Park Development</strong> - Environmental clearance received
-            <br><small style="color: #7f8c8d;">Budget: $1.8M | Progress: 45%</small>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-date">Dec 10</div>
-          <div>
-            <strong>Water Supply Enhancement</strong> - Installation phase initiated
-            <br><small style="color: #7f8c8d;">Budget: $3.2M | Progress: 60%</small>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-date">Dec 8</div>
-          <div>
-            <strong>School Infrastructure</strong> - Contractor selection completed
-            <br><small style="color: #7f8c8d;">Budget: $4.5M | Progress: 25%</small>
-          </div>
-        </div>
-      </div>
-    </div>
+  <!-- KPI Cards -->
+  <div class="stats-row" id="kpiRow">
+    <div class="stat-card"><div class="stat-num" id="kTotalP">—</div><div class="stat-lbl">Total Projects</div></div>
+    <div class="stat-card green"><div class="stat-num" id="kDone">—</div><div class="stat-lbl">Completed</div></div>
+    <div class="stat-card orange"><div class="stat-num" id="kActive">—</div><div class="stat-lbl">In Progress</div></div>
+    <div class="stat-card"><div class="stat-num" id="kRate">—</div><div class="stat-lbl">Completion %</div></div>
+    <div class="stat-card purple"><div class="stat-num" id="kBudget">—</div><div class="stat-lbl">Total Budget</div></div>
+    <div class="stat-card"><div class="stat-num" id="kFeedback">—</div><div class="stat-lbl">Feedbacks</div></div>
+    <div class="stat-card green"><div class="stat-num" id="kRating">—</div><div class="stat-lbl">Avg Rating</div></div>
+    <div class="stat-card"><div class="stat-num" id="kUsers">—</div><div class="stat-lbl">Citizens</div></div>
   </div>
 
-  <footer>
-    <div class="footer-content">
-      <div class="footer-section">
-        <h3>HyperGov</h3>
-        <p>Making civic governance transparent and accessible to everyone.</p>
-      </div>
-      <div class="footer-section">
-        <h3>Quick Links</h3>
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/about.html">About</a></li>
-          <li><a href="/analytics.html">Analytics</a></li>
-          <li><a href="/faq.html">FAQs</a></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h3>Support</h3>
-        <ul>
-          <li><a href="/feedback.html">Feedback</a></li>
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms of Service</a></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h3>Connect</h3>
-        <ul>
-          <li><a href="#">Twitter</a></li>
-          <li><a href="#">LinkedIn</a></li>
-          <li><a href="#">GitHub</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2024 HyperGov. All rights reserved.</p>
-    </div>
-  </footer>
+  <!-- Project Charts -->
+  <div class="sec-title">🏗️ Project Analytics</div>
+  <div class="chart-grid">
+    <div class="chart-card"><h4>Project Status Breakdown</h4><div class="chart-wrap"><canvas id="cStatus"></canvas></div></div>
+    <div class="chart-card"><h4>Budget by Status (₹ Lakhs)</h4><div class="chart-wrap"><canvas id="cBudget"></canvas></div></div>
+    <div class="chart-card"><h4>Top Projects by Budget</h4><div class="chart-wrap"><canvas id="cTopProj"></canvas></div></div>
+    <div class="chart-card"><h4>Feedback Sentiment Distribution</h4><div class="chart-wrap"><canvas id="cSentiment"></canvas></div></div>
+  </div>
 
-  <script src="/js/authUtils.js"></script>
-  <script src="/js/main.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      updateNavigation();
-      if (!isAuthenticated()) {
-        window.location.href = '/auth.html';
-        return;
-      }
-      
-      // Initialize all charts
-      initializeCharts();
-      loadDevelopmentProofs();
+  <!-- Recent Feedback -->
+  <div class="sec-title">💬 Recent Citizen Feedback</div>
+  <div id="feedbackFeed" class="loading">Loading feedback...</div>
+
+  <!-- ML Metrics Section -->
+  <div class="sec-title">🤖 ML Model Performance Metrics</div>
+  <div class="ml-grid" id="mlGrid">
+    <div class="loading">Loading ML metrics...</div>
+  </div>
+
+  <!-- Feature Importance Charts -->
+  <div class="sec-title">📈 Model Explainability — Feature Importance</div>
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h4>⏱️ Delay Predictor — Feature Importance</h4>
+      <div id="delayFI" class="loading">Loading...</div>
+    </div>
+    <div class="chart-card">
+      <h4>💰 Budget Regressor — Feature Importance</h4>
+      <div id="budgetFI" class="loading">Loading...</div>
+    </div>
+    <div class="chart-card">
+      <h4>🏷️ Classifier — Confusion Matrix</h4>
+      <div class="chart-wrap"><canvas id="cConfusion"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h4>🔍 Complaint Clusters</h4>
+      <div id="clusterInfo" class="loading">Loading...</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-section"><h3>HyperGov</h3><p>AI-powered civic governance transparency platform.</p></div>
+    <div class="footer-section"><h3>Quick Links</h3><ul>
+      <li><a href="/">Home</a></li><li><a href="/analytics.html">Analytics</a></li>
+      <li><a href="/ai-dashboard.html">AI Intelligence</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom"><p>&copy; 2025 HyperGov. All rights reserved.</p></div>
+</footer>
+
+<script src="/js/authUtils.js"></script>
+<script src="/js/main.js"></script>
+<script>
+const API = '/api/v1';
+
+document.addEventListener('DOMContentLoaded', async () => {
+  updateNavigation();
+  if (!isAuthenticated()) { window.location.href = '/auth.html'; return; }
+  await Promise.all([loadDashboard(), loadMlMetrics()]);
+});
+
+// ── Live Dashboard ────────────────────────────────────────────────────────────
+async function loadDashboard() {
+  try {
+    const r = await fetch(`${API}/analytics/dashboard`);
+    const d = await r.json();
+    if (!d.success) return;
+
+    const p = d.projects, f = d.feedback, u = d.users;
+
+    // KPIs
+    document.getElementById('kTotalP').textContent  = p.total;
+    document.getElementById('kDone').textContent    = p.completed;
+    document.getElementById('kActive').textContent  = p.inProgress;
+    document.getElementById('kRate').textContent    = p.completionRate + '%';
+    document.getElementById('kBudget').textContent  = '₹' + (p.totalBudgetINR/100000).toFixed(1) + 'L';
+    document.getElementById('kFeedback').textContent= f.total;
+    document.getElementById('kRating').textContent  = f.avgRating + '/5';
+    document.getElementById('kUsers').textContent   = u.citizens;
+
+    // Status chart
+    new Chart(document.getElementById('cStatus'), {
+      type:'doughnut',
+      data:{
+        labels:['Completed','In Progress','Planning','On Hold'],
+        datasets:[{data:[p.completed,p.inProgress,p.planning,p.onHold],
+          backgroundColor:['#27ae60','#3498db','#f39c12','#e74c3c']}]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}}}
     });
 
-    async function loadDevelopmentProofs() {
-      try {
-        const response = await fetch('/api/development-proof/all');
-        const data = await response.json();
-        
-        const container = document.getElementById('developmentProofs');
-        
-        if (!data.success || data.data.length === 0) {
-          // Show mock data for demo
-          container.innerHTML = `
-            <div style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-              <h4 style="color: #2c3e50; margin-bottom: 1rem;">Main Street Renovation</h4>
-              <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: center;">
-                <div>
-                  <div style="font-weight: bold; color: #7f8c8d; margin-bottom: 0.5rem;">BEFORE</div>
-                  <img src=""
-                       style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;" 
-                       alt="Before">
-                  <p style="font-size: 0.85rem; color: #7f8c8d; margin-top: 0.5rem;">Old damaged road with potholes</p>
-                </div>
-                <div style="font-size: 2rem; color: #27ae60;">→</div>
-                <div>
-                  <div style="font-weight: bold; color: #7f8c8d; margin-bottom: 0.5rem;">AFTER</div>
-                  <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=250&fit=crop" 
-                       style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;" 
-                       alt="After">
-                  <p style="font-size: 0.85rem; color: #7f8c8d; margin-top: 0.5rem;">Modern 4-lane smart road</p>
-                </div>
-              </div>
-              <div style="margin-top: 1rem; padding: 1rem; background: #e8f5e9; border-radius: 8px; border-left: 4px solid #27ae60;">
-                <strong style="color: #27ae60;">✓ Completed</strong> - Budget: $2.1M | Duration: 8 months | Citizens Benefited: 15,000+
-              </div>
-            </div>
+    // Budget by status chart
+    const bs = p.byStatus || {};
+    const statuses = Object.keys(bs);
+    new Chart(document.getElementById('cBudget'), {
+      type:'bar',
+      data:{
+        labels: statuses,
+        datasets:[{label:'Budget (₹L)',
+          data: statuses.map(s => parseFloat((bs[s].totalBudget/100000).toFixed(1))),
+          backgroundColor:['#27ae60','#3498db','#f39c12','#e74c3c','#8b5cf6']}]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+        scales:{y:{beginAtZero:true}}}
+    });
 
-            <div style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-              <h4 style="color: #2c3e50; margin-bottom: 1rem;">Community Park Development</h4>
-              <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: center;">
-                <div>
-                  <div style="font-weight: bold; color: #7f8c8d; margin-bottom: 0.5rem;">BEFORE</div>
-                  <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&h=250&fit=crop" 
-                       style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;" 
-                       alt="Before">
-                  <p style="font-size: 0.85rem; color: #7f8c8d; margin-top: 0.5rem;">Unused vacant land</p>
-                </div>
-                <div style="font-size: 2rem; color: #27ae60;">→</div>
-                <div>
-                  <div style="font-weight: bold; color: #7f8c8d; margin-bottom: 0.5rem;">AFTER</div>
-                  <img src="https://images.unsplash.com/photo-1519331379826-f10be5486c6f?w=400&h=250&fit=crop" 
-                       style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;" 
-                       alt="After">
-                  <p style="font-size: 0.85rem; color: #7f8c8d; margin-top: 0.5rem;">Green park with playground</p>
-                </div>
-              </div>
-              <div style="margin-top: 1rem; padding: 1rem; background: #fff3e0; border-radius: 8px; border-left: 4px solid #f39c12;">
-                <strong style="color: #f39c12;">⏳ In Progress (65%)</strong> - Budget: $1.8M | Est. Completion: Mar 2025
-              </div>
-            </div>
+    // Top projects
+    const top = p.topByBudget || [];
+    new Chart(document.getElementById('cTopProj'), {
+      type:'bar',
+      data:{
+        labels: top.map(t => t.title.substring(0,20)+'...'),
+        datasets:[{label:'Budget (₹L)',
+          data: top.map(t => parseFloat((t.budget/100000).toFixed(1))),
+          backgroundColor:'#3498db'}]
+      },
+      options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+        plugins:{legend:{display:false}},scales:{x:{beginAtZero:true}}}
+    });
 
-            <div style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-              <h4 style="color: #2c3e50; margin-bottom: 1rem;">Hospital Infrastructure Upgrade</h4>
-              <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: center;">
-                <div>
-                  <div style="font-weight: bold; color: #7f8c8d; margin-bottom: 0.5rem;">BEFORE</div>
-                  <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=400&h=250&fit=crop" 
-                       style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;" 
-                       alt="Before">
-                  <p style="font-size: 0.85rem; color: #7f8c8d; margin-top: 0.5rem;">Old hospital building</p>
-                </div>
-                <div style="font-size: 2rem; color: #27ae60;">→</div>
-                <div>
-                  <div style="font-weight: bold; color: #7f8c8d; margin-bottom: 0.5rem;">AFTER</div>
-                  <img src="https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=400&h=250&fit=crop" 
-                       style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;" 
-                       alt="After">
-                  <p style="font-size: 0.85rem; color: #7f8c8d; margin-top: 0.5rem;">Modern medical facility</p>
-                </div>
-              </div>
-              <div style="margin-top: 1rem; padding: 1rem; background: #e8f5e9; border-radius: 8px; border-left: 4px solid #27ae60;">
-                <strong style="color: #27ae60;">✓ Completed</strong> - Budget: $4.5M | Duration: 14 months | Capacity: 200 beds
-              </div>
-            </div>
-          `;
-          return;
-        }
-        
-        // Render actual data from API
-        container.innerHTML = data.data.map(proof => `
-          <div style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-            <h4 style="color: #2c3e50; margin-bottom: 1rem;">${proof.projectTitle || 'Project'}</h4>
-            <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: center;">
-              <div>
-                <div style="font-weight: bold; color: #7f8c8d; margin-bottom: 0.5rem;">BEFORE</div>
-                <img src="${proof.beforeImage}" 
-                     style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;" 
-                     alt="Before">
-              </div>
-              <div style="font-size: 2rem; color: #27ae60;">→</div>
-              <div>
-                <div style="font-weight: bold; color: #7f8c8d; margin-bottom: 0.5rem;">AFTER</div>
-                <img src="${proof.afterImage}" 
-                     style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;" 
-                     alt="After">
-              </div>
-            </div>
-            <div style="margin-top: 1rem; padding: 1rem; background: #e8f5e9; border-radius: 8px;">
-              <p style="color: #2c3e50;">${proof.description}</p>
-            </div>
-          </div>
-        `).join('');
-      } catch (error) {
-        console.error('Error loading development proofs:', error);
-      }
+    // Sentiment pie
+    new Chart(document.getElementById('cSentiment'), {
+      type:'pie',
+      data:{
+        labels:['Positive (4-5★)','Neutral (3★)','Negative (1-2★)'],
+        datasets:[{data:[f.positive,f.neutral,f.negative],
+          backgroundColor:['#27ae60','#f39c12','#e74c3c']}]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}}}
+    });
+
+    // Recent feedback
+    const ff = document.getElementById('feedbackFeed');
+    if (f.recent && f.recent.length) {
+      ff.innerHTML = f.recent.map(fb => `
+        <div class="feed-item">
+          <span class="stars">${'⭐'.repeat(fb.rating)}</span>
+          <strong style="margin-left:.5rem">${fb.projectTitle}</strong>
+          <div style="margin-top:.3rem;color:#444">${fb.message}...</div>
+          <div style="font-size:.75rem;color:#aaa;margin-top:.2rem">${new Date(fb.date).toLocaleDateString('en-IN')}</div>
+        </div>`).join('');
+    } else {
+      ff.innerHTML = '<div style="color:#aaa;padding:1rem">No feedback yet — add some from the dashboard!</div>';
+    }
+  } catch(e) {
+    console.error('Dashboard load error:', e);
+  }
+}
+
+// ── ML Metrics ─────────────────────────────────────────────────────────────
+async function loadMlMetrics() {
+  try {
+    const r = await fetch(`${API}/analytics/ml-metrics`);
+    const d = await r.json();
+    if (!d.success) {
+      document.getElementById('mlGrid').innerHTML =
+        '<div style="color:#e74c3c;padding:1rem">ML service offline — run: <code>uvicorn main:app --port 8000</code></div>';
+      return;
     }
 
-    function initializeCharts() {
-      // Budget Distribution Chart
-      new Chart(document.getElementById('budgetChart'), {
-        type: 'doughnut',
-        data: {
-          labels: ['Infrastructure', 'Parks & Recreation', 'Education', 'Healthcare', 'Transportation'],
-          datasets: [{
-            data: [4200000, 1800000, 4500000, 1200000, 800000],
-            backgroundColor: ['#3498db', '#2ecc71', '#e74c3c', '#f39c12', '#9b59b6']
-          }]
-        },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
-      });
+    const cl = d.classifier || {}, dl = d.delay || {},
+          bg = d.budget    || {}, km = d.clustering || {};
 
-      // Project Status Chart
-      new Chart(document.getElementById('statusChart'), {
-        type: 'bar',
-        data: {
-          labels: ['Planning', 'In Progress', 'Completed', 'On Hold'],
-          datasets: [{
-            label: 'Projects',
-            data: [6, 12, 8, 2],
-            backgroundColor: ['#f39c12', '#3498db', '#2ecc71', '#e74c3c']
-          }]
-        },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-      });
+    const mlCards = [
+      {
+        icon:'🏷️', name:'Complaint Classifier',
+        model:'TF-IDF + Logistic Regression',
+        rows: cl.train_rows ? `${cl.train_rows + cl.test_rows} rows` : '5,000 rows',
+        metrics:[
+          {k:'Test Accuracy', v: cl.test_accuracy ? (cl.test_accuracy*100).toFixed(1)+'%' : '—', cls:cl.test_accuracy>=0.85?'':'warn'},
+          {k:'Weighted F1',   v: cl.weighted_f1 ? (cl.weighted_f1*100).toFixed(1)+'%' : '—', cls:''},
+          {k:'CV Mean',       v: cl.cv_mean ? (cl.cv_mean*100).toFixed(1)+'%' : '—', cls:''},
+          {k:'Categories',    v: (cl.categories||[]).length || 10, cls:''},
+        ]
+      },
+      {
+        icon:'⏱️', name:'Delay Predictor',
+        model:'XGBoost Classifier',
+        rows: dl.train_rows ? `${dl.train_rows + dl.test_rows} rows` : '10,000 rows',
+        metrics:[
+          {k:'Test Accuracy', v: dl.accuracy ? (dl.accuracy*100).toFixed(1)+'%' : '—', cls:dl.accuracy>=0.85?'':'warn'},
+          {k:'ROC-AUC',       v: dl.roc_auc ? dl.roc_auc : '—', cls:''},
+          {k:'Weighted F1',   v: dl.weighted_f1 ? (dl.weighted_f1*100).toFixed(1)+'%' : '—', cls:''},
+          {k:'Features',      v: (dl.features||[]).length || 11, cls:''},
+        ]
+      },
+      {
+        icon:'💰', name:'Budget Overrun Regressor',
+        model:'GradientBoosting Regressor',
+        rows: bg.train_rows ? `${bg.train_rows + bg.test_rows} rows` : '10,000 rows',
+        metrics:[
+          {k:'MAE',  v: bg.mae  ? bg.mae+'%'  : '—', cls:''},
+          {k:'RMSE', v: bg.rmse ? bg.rmse+'%' : '—', cls:''},
+          {k:'R²',   v: bg.r2   ? bg.r2       : '—', cls:bg.r2>=0.8?'':'warn'},
+          {k:'Target',v:'Timeline overrun %',cls:''},
+        ]
+      },
+      {
+        icon:'🔍', name:'Complaint Clustering',
+        model:'KMeans on TF-IDF + SVD',
+        rows:`${km.total_complaints || 5000} complaints`,
+        metrics:[
+          {k:'Clusters (K)',    v: km.n_clusters || '—', cls:''},
+          {k:'Silhouette',      v: km.silhouette_score || '—', cls:''},
+          {k:'Largest Cluster', v: km.clusters ? Math.max(...Object.values(km.clusters).map(c=>c.size)) : '—', cls:''},
+          {k:'Method',          v:'Unsupervised',cls:''},
+        ]
+      },
+    ];
 
-      // Engagement Trends Chart
-      new Chart(document.getElementById('engagementChart'), {
-        type: 'line',
-        data: {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-          datasets: [{
-            label: 'User Engagement',
-            data: [320, 450, 380, 520, 680, 750],
-            borderColor: '#3498db',
-            backgroundColor: 'rgba(52, 152, 219, 0.1)',
-            fill: true
-          }]
-        },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-      });
+    document.getElementById('mlGrid').innerHTML = mlCards.map(c => `
+      <div class="ml-card">
+        <div class="model-name">${c.icon} ${c.name}</div>
+        <div style="font-size:.75rem;color:#7f8c8d;margin-bottom:.8rem">
+          ${c.model} &nbsp;·&nbsp; ${c.rows}
+        </div>
+        ${c.metrics.map(m => `
+          <div class="metric-row">
+            <span>${m.k}</span>
+            <span class="metric-val ${m.cls}">${m.v}</span>
+          </div>`).join('')}
+      </div>`).join('');
 
-      // Geographic Distribution Chart
-      new Chart(document.getElementById('geoChart'), {
-        type: 'polarArea',
-        data: {
-          labels: ['North District', 'South District', 'East District', 'West District', 'Central'],
-          datasets: [{
-            data: [8, 6, 4, 3, 3],
-            backgroundColor: ['#3498db', '#2ecc71', '#e74c3c', '#f39c12', '#9b59b6']
-          }]
-        },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
-      });
+    // Feature importance bars — Delay
+    renderFI('delayFI', dl.feature_importance || {});
 
-      // Response Time Chart
-      new Chart(document.getElementById('responseChart'), {
-        type: 'line',
-        data: {
-          labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-          datasets: [{
-            label: 'Avg Response Time (hours)',
-            data: [24, 18, 12, 8],
-            borderColor: '#2ecc71',
-            backgroundColor: 'rgba(46, 204, 113, 0.1)',
-            fill: true
-          }]
-        },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-      });
+    // Feature importance bars — Budget
+    renderFI('budgetFI', bg.feature_importance || {});
 
-      // Feedback Categories Chart
-      new Chart(document.getElementById('feedbackChart'), {
-        type: 'radar',
-        data: {
-          labels: ['Quality', 'Timeline', 'Communication', 'Budget', 'Impact'],
-          datasets: [{
-            label: 'Satisfaction Score',
-            data: [8.5, 7.2, 9.1, 6.8, 8.9],
-            borderColor: '#e74c3c',
-            backgroundColor: 'rgba(231, 76, 60, 0.2)'
-          }]
-        },
-        options: { 
-          responsive: true, 
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            r: {
-              beginAtZero: true,
-              max: 10
-            }
-          }
-        }
-      });
+    // Confusion matrix heatmap
+    if (cl.confusion_matrix && cl.confusion_labels) {
+      renderConfusion(cl.confusion_matrix, cl.confusion_labels);
     }
-  </script>
+
+    // Cluster info
+    if (km.clusters) {
+      const clusters = km.clusters;
+      document.getElementById('clusterInfo').innerHTML =
+        Object.entries(clusters).map(([id, info]) => `
+          <div style="margin-bottom:.7rem;padding:.6rem;background:#f8fafc;border-radius:8px;border-left:3px solid #3498db;">
+            <strong>Cluster ${id}</strong>
+            <span class="pill pill-blue" style="margin-left:.4rem">${info.size} complaints</span>
+            <div style="font-size:.78rem;color:#555;margin-top:.3rem">
+              ${info.top_terms.slice(0,4).join(', ')}
+            </div>
+          </div>`).join('');
+    }
+
+  } catch(e) {
+    document.getElementById('mlGrid').innerHTML =
+      '<div style="color:#e74c3c">ML service offline</div>';
+    document.getElementById('delayFI').innerHTML = '';
+    document.getElementById('budgetFI').innerHTML = '';
+    console.error('ML metrics error:', e);
+  }
+}
+
+function renderFI(containerId, fi) {
+  const el = document.getElementById(containerId);
+  const entries = Object.entries(fi)
+    .sort((a,b) => b[1]-a[1])
+    .slice(0, 8);
+  if (!entries.length) { el.innerHTML = '<div style="color:#aaa">No data</div>'; return; }
+  const max = entries[0][1];
+  el.innerHTML = entries.map(([k,v]) => `
+    <div class="fi-row">
+      <div class="fi-lbl">${k}</div>
+      <div class="fi-track">
+        <div class="fi-fill" style="width:${Math.round((v/max)*100)}%"></div>
+      </div>
+      <div class="fi-pct">${(v*100).toFixed(1)}%</div>
+    </div>`).join('');
+}
+
+function renderConfusion(matrix, labels) {
+  const size = labels.length;
+  const flat = matrix.flat();
+  const maxV = Math.max(...flat);
+  const colors = flat.map(v => {
+    const a = v/maxV;
+    return `rgba(52,152,219,${a.toFixed(2)})`;
+  });
+  const datasets = [];
+  for (let i=0;i<size;i++) {
+    datasets.push({
+      label: labels[i],
+      data: matrix[i].map((v,j)=>({x:j,y:i,v})),
+      backgroundColor: matrix[i].map(v=>`rgba(52,152,219,${(v/maxV).toFixed(2)})`),
+    });
+  }
+  // Simple bar chart as confusion approximation
+  new Chart(document.getElementById('cConfusion'),{
+    type:'bar',
+    data:{
+      labels: labels.map(l=>l.substring(0,7)),
+      datasets:[{
+        label:'Correct predictions',
+        data: matrix.map((row,i)=>row[i]),
+        backgroundColor:'#27ae60',
+      },{
+        label:'Misclassifications',
+        data: matrix.map((row,i)=>row.reduce((s,v,j)=>j!==i?s+v:s,0)),
+        backgroundColor:'#e74c3c',
+      }]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom'}},
+      scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}}}
+  });
+}
+</script>
 </body>
 </html>

@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Intelligence — HyperGov</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { background: #f0f4f8; }
+
+    .ai-container {
+      max-width: 1300px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .page-hero {
+      background: linear-gradient(135deg, #1a3c5e 0%, #2d6a9f 100%);
+      color: white;
+      padding: 2rem 2.5rem;
+      border-radius: 16px;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .page-hero .hero-icon { font-size: 3rem; }
+    .page-hero h1 { font-size: 1.8rem; margin: 0 0 0.3rem; }
+    .page-hero p  { margin: 0; opacity: 0.85; font-size: 0.95rem; }
+
+    /* ── ML Status Bar ── */
+    .status-bar {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .status-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .dot-green  { background: #27ae60; }
+    .dot-red    { background: #e74c3c; }
+    .dot-yellow { background: #f39c12; }
+
+    /* ── Grid ── */
+    .ai-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 900px) { .ai-grid { grid-template-columns: 1fr; } }
+
+    .ai-card {
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 2px 14px rgba(0,0,0,0.07);
+      overflow: hidden;
+    }
+    .ai-card-header {
+      padding: 1.2rem 1.5rem;
+      border-bottom: 2px solid #f0f4f8;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .ai-card-header .icon { font-size: 1.4rem; }
+    .ai-card-header h3 { margin: 0; font-size: 1rem; color: #1a3c5e; }
+    .ai-card-header small { color: #7f8c8d; font-size: 0.78rem; display: block; }
+    .ai-card-body { padding: 1.5rem; }
+
+    /* ── Inputs ── */
+    textarea, input[type="text"], input[type="number"], select {
+      width: 100%;
+      padding: 0.7rem 0.9rem;
+      border: 1.5px solid #dde3ea;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+      background: #fafbfc;
+    }
+    textarea:focus, input:focus, select:focus {
+      outline: none;
+      border-color: #3498db;
+      background: white;
+    }
+    textarea { resize: vertical; min-height: 80px; }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.7rem;
+      margin-bottom: 0.7rem;
+    }
+    .input-label { font-size: 0.78rem; color: #555; margin-bottom: 0.25rem; font-weight: 600; }
+
+    .btn-ml {
+      width: 100%;
+      padding: 0.75rem;
+      background: linear-gradient(135deg, #1a3c5e, #2d6a9f);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 0.8rem;
+      transition: opacity 0.2s;
+    }
+    .btn-ml:hover   { opacity: 0.9; }
+    .btn-ml:disabled{ opacity: 0.5; cursor: not-allowed; }
+
+    /* ── Result boxes ── */
+    .result-box {
+      margin-top: 1rem;
+      padding: 1rem 1.2rem;
+      border-radius: 10px;
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+    .result-box.show { display: block; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+
+    .result-main  { font-size: 1.3rem; font-weight: 700; color: #1a3c5e; margin-bottom: 0.5rem; }
+    .result-sub   { font-size: 0.85rem; color: #555; margin-bottom: 0.3rem; }
+    .result-rec   { font-size: 0.83rem; color: #27ae60; font-weight: 600; margin-top: 0.5rem; }
+    .result-error { color: #e74c3c; font-size: 0.88rem; }
+
+    /* Priority badge */
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.7rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-left: 0.5rem;
+    }
+    .badge-Low      { background:#d1fae5; color:#065f46; }
+    .badge-Medium   { background:#fef3c7; color:#92400e; }
+    .badge-High     { background:#fee2e2; color:#991b1b; }
+    .badge-Critical { background:#7f1d1d; color:white; }
+
+    /* Sentiment */
+    .sentiment-positive { color: #27ae60; }
+    .sentiment-negative { color: #e74c3c; }
+    .sentiment-neutral  { color: #f39c12; }
+
+    /* Risk meter */
+    .risk-bar-wrap { margin: 0.8rem 0; }
+    .risk-bar-track { width:100%; height:12px; background:#e8ecf0; border-radius:6px; overflow:hidden; }
+    .risk-bar-fill  { height:12px; border-radius:6px; transition: width 0.8s ease; }
+
+    /* Conf bars (top predictions) */
+    .conf-row { display:flex; align-items:center; gap:0.6rem; margin-bottom:0.4rem; font-size:0.8rem; }
+    .conf-label { width:100px; flex-shrink:0; color:#555; }
+    .conf-track { flex:1; background:#e8ecf0; border-radius:3px; height:8px; }
+    .conf-fill  { height:8px; border-radius:3px; background:#3498db; }
+    .conf-pct   { width:40px; text-align:right; color:#7f8c8d; }
+
+    /* ── Agent Chat (full width) ── */
+    .agent-card { margin-bottom: 2rem; }
+    .chat-window {
+      height: 320px;
+      overflow-y: auto;
+      padding: 1rem;
+      background: #f8fafc;
+      border-radius: 8px;
+      border: 1.5px solid #e2e8f0;
+      margin-bottom: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .chat-msg { max-width: 80%; padding: 0.75rem 1rem; border-radius: 12px; font-size: 0.88rem; line-height: 1.55; }
+    .chat-user { align-self: flex-end; background: #1a3c5e; color: white; border-bottom-right-radius: 4px; }
+    .chat-agent{ align-self: flex-start; background: white; color: #2c3e50; border: 1px solid #e2e8f0; border-bottom-left-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); white-space: pre-wrap; }
+    .chat-typing{ align-self:flex-start; color:#aaa; font-style:italic; font-size:0.82rem; }
+    .chat-input-row { display:flex; gap:0.7rem; }
+    .chat-input-row input { flex:1; }
+    .btn-send {
+      padding: 0.7rem 1.2rem;
+      background: #1a3c5e;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+    .btn-send:disabled { opacity:0.5; cursor:not-allowed; }
+
+    /* quick prompts */
+    .quick-prompts { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.8rem; }
+    .quick-btn {
+      padding: 0.3rem 0.8rem;
+      background: #eef2ff;
+      color: #3730a3;
+      border: 1px solid #c7d2fe;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .quick-btn:hover { background: #e0e7ff; }
+
+    .loading-spinner {
+      display: inline-block;
+      width: 14px; height: 14px;
+      border: 2px solid #ccc;
+      border-top-color: #3498db;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/" class="logo">🏛️ HyperGov</a>
+      <button class="mobile-menu-toggle" onclick="toggleMenu()">☰</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/">Home</a></li>
+        <li><a href="/map.html">Map</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/analytics.html">Analytics</a></li>
+        <li><a href="/ai-dashboard.html" class="active">AI Intelligence</a></li>
+        <li><a href="/faq.html">FAQs</a></li>
+        <li id="navAuthBtn"><a href="/auth.html" class="btn btn-primary">Sign In</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="ai-container">
+
+    <!-- Hero -->
+    <div class="page-hero">
+      <div class="hero-icon">🧠</div>
+      <div>
+        <h1>HyperGov AI Intelligence</h1>
+        <p>Machine Learning powered civic analysis — complaint classification, delay prediction, sentiment analysis & governance agent</p>
+      </div>
+    </div>
+
+    <!-- ML Status -->
+    <div class="status-bar" id="statusBar">
+      <div class="status-pill"><div class="dot dot-yellow"></div> Checking ML service...</div>
+    </div>
+
+    <!-- Row 1: Classify + Sentiment -->
+    <div class="ai-grid">
+
+      <!-- Complaint Classifier -->
+      <div class="ai-card">
+        <div class="ai-card-header">
+          <span class="icon">🏷️</span>
+          <div>
+            <h3>Complaint Classification</h3>
+            <small>TF-IDF + Logistic Regression · 10 categories</small>
+          </div>
+        </div>
+        <div class="ai-card-body">
+          <div class="input-label">Complaint Text</div>
+          <textarea id="classifyInput" placeholder="e.g. Street lights are not working near the school"></textarea>
+          <button class="btn-ml" id="classifyBtn" onclick="runClassify()">🏷️ Classify Complaint</button>
+          <div class="result-box" id="classifyResult"></div>
+        </div>
+      </div>
+
+      <!-- Sentiment Analysis -->
+      <div class="ai-card">
+        <div class="ai-card-header">
+          <span class="icon">💬</span>
+          <div>
+            <h3>Sentiment Analysis</h3>
+            <small>DistilBERT (HuggingFace) · Positive / Neutral / Negative</small>
+          </div>
+        </div>
+        <div class="ai-card-body">
+          <div class="input-label">Citizen Feedback Text</div>
+          <textarea id="sentimentInput" placeholder="e.g. The road repair was done quickly, very happy with the work"></textarea>
+          <button class="btn-ml" id="sentimentBtn" onclick="runSentiment()">💬 Analyze Sentiment</button>
+          <div class="result-box" id="sentimentResult"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Row 2: Delay Predictor (full width) -->
+    <div class="ai-card" style="margin-bottom:1.5rem;">
+      <div class="ai-card-header">
+        <span class="icon">⏱️</span>
+        <div>
+          <h3>Project Delay Prediction</h3>
+          <small>Random Forest + XGBoost · Risk Score 0–100</small>
+        </div>
+      </div>
+      <div class="ai-card-body">
+        <div class="input-row">
+          <div>
+            <div class="input-label">Budget (Lakhs ₹)</div>
+            <input type="number" id="dBudget" value="10" min="0.1" step="0.5">
+          </div>
+          <div>
+            <div class="input-label">Duration (Days)</div>
+            <input type="number" id="dDuration" value="365" min="1">
+          </div>
+          <div>
+            <div class="input-label">Progress (%)</div>
+            <input type="number" id="dProgress" value="30" min="0" max="100">
+          </div>
+          <div>
+            <div class="input-label">Complaint Count</div>
+            <input type="number" id="dComplaints" value="25" min="0">
+          </div>
+          <div>
+            <div class="input-label">Region</div>
+            <select id="dRegion">
+              <option>North</option><option>South</option>
+              <option>East</option><option>West</option><option>Central</option>
+            </select>
+          </div>
+          <div>
+            <div class="input-label">Department</div>
+            <select id="dDept">
+              <option>Roads</option><option>Water</option><option>Sanitation</option>
+              <option>Healthcare</option><option>Education</option><option>Parks</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-ml" id="delayBtn" onclick="runDelay()">⏱️ Predict Delay Risk</button>
+        <div class="result-box" id="delayResult"></div>
+      </div>
+    </div>
+
+    <!-- Row 3: Governance Agent (full width) -->
+    <div class="ai-card agent-card">
+      <div class="ai-card-header">
+        <span class="icon">🤖</span>
+        <div>
+          <h3>Governance Intelligence Agent</h3>
+          <small>LangChain ReAct · Groq LLaMA3 · 6 tools</small>
+        </div>
+      </div>
+      <div class="ai-card-body">
+        <div class="quick-prompts">
+          <span class="quick-btn" onclick="sendQuick('Give me a summary report of all projects')">📊 Project Summary</span>
+          <span class="quick-btn" onclick="sendQuick('How many road complaints are pending?')">🚦 Road Complaints</span>
+          <span class="quick-btn" onclick="sendQuick('Which projects are at high delay risk?')">⚠️ Delay Risks</span>
+          <span class="quick-btn" onclick="sendQuick('What is the process for a citizen to report an issue?')">❓ How to Report</span>
+          <span class="quick-btn" onclick="sendQuick('Show me healthcare complaints analysis')">🏥 Healthcare</span>
+        </div>
+        <div class="chat-window" id="chatWindow">
+          <div class="chat-msg chat-agent">👋 Hello! I'm HyperGov's Governance Intelligence Agent.<br>I can search projects, analyze complaints, predict delay risks, summarize feedback, and answer governance questions. How can I help?</div>
+        </div>
+        <div class="chat-input-row">
+          <input type="text" id="agentInput" placeholder="Ask about projects, complaints, delays, reports..." onkeydown="if(event.key==='Enter') sendAgent()">
+          <button class="btn-send" id="sendBtn" onclick="sendAgent()">Send ➤</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /ai-container -->
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>HyperGov</h3>
+        <p>AI-powered civic governance transparency platform.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/analytics.html">Analytics</a></li>
+          <li><a href="/ai-dashboard.html">AI Intelligence</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 HyperGov. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/js/authUtils.js"></script>
+  <script src="/js/main.js"></script>
+  <script>
+  const API = '/api/v1/ml';
+
+  // ── ML Status check ──────────────────────────────────────────────────────────
+  async function checkStatus() {
+    try {
+      const r = await fetch(`${API}/status`);
+      const d = await r.json();
+      const bar = document.getElementById('statusBar');
+      const pills = [
+        { label: 'Complaint Classifier', ok: d.classifier?.loaded },
+        { label: 'Delay Predictor',      ok: d.delay?.loaded      },
+        { label: 'Sentiment Model',      ok: d.sentiment?.loaded  },
+        { label: 'ML Service',           ok: true                 },
+      ];
+      bar.innerHTML = pills.map(p => `
+        <div class="status-pill">
+          <div class="dot ${p.ok ? 'dot-green' : 'dot-red'}"></div>
+          ${p.label}: ${p.ok ? 'Ready' : 'Offline'}
+        </div>
+      `).join('');
+    } catch {
+      document.getElementById('statusBar').innerHTML =
+        '<div class="status-pill"><div class="dot dot-red"></div> ML Service: Offline (run uvicorn main:app)</div>';
+    }
+  }
+  checkStatus();
+
+  // ── Complaint Classify ───────────────────────────────────────────────────────
+  async function runClassify() {
+    const text = document.getElementById('classifyInput').value.trim();
+    const box  = document.getElementById('classifyResult');
+    const btn  = document.getElementById('classifyBtn');
+    if (!text) return;
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="loading-spinner"></span>Classifying...';
+    box.className = 'result-box';
+
+    try {
+      const r = await fetch(`${API}/classify`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
+      });
+      const d = await r.json();
+
+      if (!d.success) {
+        box.innerHTML = `<div class="result-error">⚠️ ${d.message || 'Error from ML service'}</div>`;
+      } else {
+        const top3 = (d.top_predictions || []).map(p => `
+          <div class="conf-row">
+            <div class="conf-label">${p.category}</div>
+            <div class="conf-track"><div class="conf-fill" style="width:${p.confidence}%"></div></div>
+            <div class="conf-pct">${p.confidence}%</div>
+          </div>
+        `).join('');
+
+        box.innerHTML = `
+          <div class="result-main">
+            📂 ${d.category}
+            <span class="badge badge-${d.priority}">${d.priority}</span>
+          </div>
+          <div class="result-sub">Confidence: <strong>${d.confidence}%</strong></div>
+          <div style="margin:0.8rem 0;">${top3}</div>
+          <div class="result-rec">💡 ${d.recommendation}</div>
+        `;
+      }
+    } catch (e) {
+      box.innerHTML = `<div class="result-error">⚠️ ML service offline. Start with: <code>uvicorn main:app --port 8000</code></div>`;
+    }
+
+    box.classList.add('show');
+    btn.disabled = false;
+    btn.innerHTML = '🏷️ Classify Complaint';
+  }
+
+  // ── Sentiment ────────────────────────────────────────────────────────────────
+  async function runSentiment() {
+    const text = document.getElementById('sentimentInput').value.trim();
+    const box  = document.getElementById('sentimentResult');
+    const btn  = document.getElementById('sentimentBtn');
+    if (!text) return;
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="loading-spinner"></span>Analyzing...';
+    box.className = 'result-box';
+
+    try {
+      const r = await fetch(`${API}/sentiment`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
+      });
+      const d = await r.json();
+
+      if (!d.success) {
+        box.innerHTML = `<div class="result-error">⚠️ ${d.message}</div>`;
+      } else {
+        const cls = `sentiment-${d.sentiment.toLowerCase()}`;
+        const barColor = d.sentiment === 'Positive' ? '#27ae60' : d.sentiment === 'Negative' ? '#e74c3c' : '#f39c12';
+        box.innerHTML = `
+          <div class="result-main ${cls}">${d.emoji} ${d.sentiment}</div>
+          <div class="result-sub">Confidence: <strong>${d.confidence}%</strong> · Source: ${d.source}</div>
+          <div class="risk-bar-wrap">
+            <div class="risk-bar-track">
+              <div class="risk-bar-fill" style="width:${d.confidence}%;background:${barColor}"></div>
+            </div>
+          </div>
+        `;
+      }
+    } catch (e) {
+      box.innerHTML = `<div class="result-error">⚠️ ML service offline.</div>`;
+    }
+
+    box.classList.add('show');
+    btn.disabled = false;
+    btn.innerHTML = '💬 Analyze Sentiment';
+  }
+
+  // ── Delay Prediction ─────────────────────────────────────────────────────────
+  async function runDelay() {
+    const box = document.getElementById('delayResult');
+    const btn = document.getElementById('delayBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="loading-spinner"></span>Predicting...';
+    box.className = 'result-box';
+
+    const payload = {
+      budget_lakhs:    parseFloat(document.getElementById('dBudget').value),
+      duration_days:   parseInt(document.getElementById('dDuration').value),
+      progress_pct:    parseInt(document.getElementById('dProgress').value),
+      complaint_count: parseInt(document.getElementById('dComplaints').value),
+      region:          document.getElementById('dRegion').value,
+      department:      document.getElementById('dDept').value,
+    };
+
+    try {
+      const r = await fetch(`${API}/delay`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const d = await r.json();
+
+      if (!d.success) {
+        box.innerHTML = `<div class="result-error">⚠️ ${d.message}</div>`;
+      } else {
+        const riskColor = d.risk_level === 'high' ? '#e74c3c' : d.risk_level === 'medium' ? '#f39c12' : '#27ae60';
+        const riskLabel = d.risk_level === 'high' ? '🔴 HIGH' : d.risk_level === 'medium' ? '🟠 MEDIUM' : '🟢 LOW';
+        box.innerHTML = `
+          <div class="result-main" style="color:${riskColor}">
+            ${d.predicted_delayed ? '⚠️ Delay Likely' : '✅ On Track'}
+          </div>
+          <div class="result-sub">
+            Risk Score: <strong>${d.risk_score}/100</strong> &nbsp;|&nbsp;
+            Probability: <strong>${(d.delay_probability*100).toFixed(1)}%</strong> &nbsp;|&nbsp;
+            Level: <strong>${riskLabel}</strong>
+          </div>
+          <div class="risk-bar-wrap">
+            <div class="risk-bar-track">
+              <div class="risk-bar-fill" style="width:${d.risk_score}%;background:${riskColor}"></div>
+            </div>
+          </div>
+          <div class="result-rec">💡 ${d.recommendation}</div>
+        `;
+      }
+    } catch (e) {
+      box.innerHTML = `<div class="result-error">⚠️ ML service offline.</div>`;
+    }
+
+    box.classList.add('show');
+    btn.disabled = false;
+    btn.innerHTML = '⏱️ Predict Delay Risk';
+  }
+
+  // ── Governance Agent Chat ────────────────────────────────────────────────────
+  const chatWindow = document.getElementById('chatWindow');
+
+  function appendMsg(text, role) {
+    const div = document.createElement('div');
+    div.className = `chat-msg chat-${role}`;
+    div.textContent = text;
+    chatWindow.appendChild(div);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+    return div;
+  }
+
+  function appendTyping() {
+    const div = document.createElement('div');
+    div.className = 'chat-typing';
+    div.id = 'typingIndicator';
+    div.innerHTML = '<span class="loading-spinner"></span> Agent is thinking...';
+    chatWindow.appendChild(div);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  }
+
+  function removeTyping() {
+    const el = document.getElementById('typingIndicator');
+    if (el) el.remove();
+  }
+
+  async function sendAgent() {
+    const input = document.getElementById('agentInput');
+    const btn   = document.getElementById('sendBtn');
+    const q     = input.value.trim();
+    if (!q) return;
+
+    appendMsg(q, 'user');
+    input.value = '';
+    btn.disabled = true;
+    appendTyping();
+
+    try {
+      const r = await fetch(`${API}/agent`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: q })
+      });
+      const d = await r.json();
+      removeTyping();
+      appendMsg(d.answer || d.message || 'No response', 'agent');
+    } catch (e) {
+      removeTyping();
+      appendMsg('⚠️ Agent service offline. Start with: uvicorn agent_api:app --port 8001', 'agent');
+    }
+
+    btn.disabled = false;
+    input.focus();
+  }
+
+  function sendQuick(q) {
+    document.getElementById('agentInput').value = q;
+    sendAgent();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    updateNavigation();
+  });
+  </script>
+</body>
+</html>

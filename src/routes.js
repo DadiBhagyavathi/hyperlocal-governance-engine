@@ -16,4 +16,7 @@ router.use("/development-proof", require("./modules/developmentProof/proof.route
 router.use("/awareness", require("./modules/awarenessAnalytics/analytics.routes"));
 router.use("/issue-detection", require("./modules/issueDetection/detection.routes"));
 
+// ML Service Routes (proxy to FastAPI)
+router.use("/ml", require("./modules/ml/ml.routes"));
+
 module.exports = router;
