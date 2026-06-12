@@ -1,0 +1,28 @@
+# HyperGov ML Service — Python Dependencies
+# Install: pip install -r requirements.txt
+
+# ── Core ML ───────────────────────────────────────────────
+scikit-learn==1.4.2
+xgboost==2.0.3
+pandas==2.2.2
+numpy==1.26.4
+joblib==1.4.2
+
+# ── API ───────────────────────────────────────────────────
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+pydantic==2.7.1
+
+# ── NLP / Transformers ────────────────────────────────────
+transformers==4.41.0
+torch==2.3.0
+tokenizers==0.19.1
+
+# ── Agent ─────────────────────────────────────────────────
+langchain==0.2.1
+langchain-groq==0.1.4
+langchain-community==0.2.1
+
+# ── Utils ─────────────────────────────────────────────────
+python-dotenv==1.0.1
+requests==2.32.3

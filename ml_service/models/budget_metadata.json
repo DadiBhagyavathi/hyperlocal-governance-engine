@@ -1,0 +1,22 @@
+{
+  "model_type": "GradientBoosting Regressor",
+  "target": "budget_overrun_pct",
+  "train_rows": 8000,
+  "test_rows": 2000,
+  "mae": 4.85,
+  "rmse": 9.3,
+  "r2": 0.9556,
+  "feature_importance": {
+    "planned_duration_days": 0.7636,
+    "complaint_count": 0.0974,
+    "land_disputes": 0.0443,
+    "previous_delays": 0.0367,
+    "material_issues": 0.0258,
+    "progress_pct": 0.0097,
+    "season_enc": 0.0062,
+    "dept_enc": 0.0052,
+    "budget_lakhs": 0.0044,
+    "team_size": 0.0043,
+    "region_enc": 0.0026
+  }
+}

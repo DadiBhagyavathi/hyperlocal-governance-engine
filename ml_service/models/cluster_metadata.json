@@ -1,0 +1,116 @@
+{
+  "model_type": "KMeans Clustering",
+  "n_clusters": 6,
+  "silhouette_score": 0.0871,
+  "total_complaints": 5000,
+  "clusters": {
+    "0": {
+      "size": 421,
+      "top_terms": [
+        "10",
+        "12 for",
+        "12 hospital",
+        "12 drainage",
+        "12 primary",
+        "12 school",
+        "12 garden",
+        "12 residents"
+      ],
+      "categories": {
+        "Safety": 60,
+        "Education": 59,
+        "Sanitation": 57
+      }
+    },
+    "1": {
+      "size": 439,
+      "top_terms": [
+        "12 area",
+        "10",
+        "12 hospital",
+        "12 primary",
+        "12 village",
+        "14 hours",
+        "21",
+        "12 station"
+      ],
+      "categories": {
+        "Sanitation": 71,
+        "Education": 56,
+        "Healthcare": 53
+      }
+    },
+    "2": {
+      "size": 2819,
+      "top_terms": [
+        "10",
+        "10 days",
+        "12 locality",
+        "12 park",
+        "12 public",
+        "12",
+        "12 station",
+        "12 residential"
+      ],
+      "categories": {
+        "Road": 393,
+        "Transport": 339,
+        "Water": 331
+      }
+    },
+    "3": {
+      "size": 402,
+      "top_terms": [
+        "12 drainage",
+        "10",
+        "12 garden",
+        "10 hours",
+        "12 area",
+        "12 primary",
+        "12 clinic",
+        "12 since"
+      ],
+      "categories": {
+        "Healthcare": 62,
+        "Safety": 59,
+        "Parks": 51
+      }
+    },
+    "4": {
+      "size": 412,
+      "top_terms": [
+        "12 clinic",
+        "10",
+        "12 for",
+        "12 hospital",
+        "12 area",
+        "12 market",
+        "12 homes",
+        "12 primary"
+      ],
+      "categories": {
+        "Safety": 63,
+        "Education": 60,
+        "Electricity": 46
+      }
+    },
+    "5": {
+      "size": 507,
+      "top_terms": [
+        "10",
+        "12 bus",
+        "12",
+        "12 garden",
+        "12 homes",
+        "10 hours",
+        "12 primary",
+        "12 since"
+      ],
+      "categories": {
+        "Construction": 96,
+        "Healthcare": 71,
+        "Parks": 57
+      }
+    }
+  }
+}

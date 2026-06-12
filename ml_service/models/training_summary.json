@@ -1,0 +1,21 @@
+{
+  "classifier": {
+    "accuracy": 1.0,
+    "f1": 1.0,
+    "cv": 1.0
+  },
+  "delay_predictor": {
+    "accuracy": 0.9315,
+    "auc": 0.9729,
+    "f1": 0.9309
+  },
+  "budget_regressor": {
+    "mae": 4.85,
+    "rmse": 9.3,
+    "r2": 0.9556
+  },
+  "clustering": {
+    "k": 6,
+    "silhouette": 0.0871
+  }
+}
